@@ -1,0 +1,19 @@
+Voltaire // design prototype
+Copyright 2026 Andrew S Klug // ASK
+
+This repository's code is licensed under the Apache License, Version 2.0.
+See the LICENSE file for the full license text.
+
+This product includes files from design-system-ASK
+(https://github.com/apexSolarKiss/design-system-ASK), copied unmodified under
+the Apache License, Version 2.0. They and their donor commit are listed in
+VENDOR.md. design-system-ASK's own LICENSE and NOTICE are reproduced in
+licenses/design-system-ASK/.
+
+The Inter and JetBrains Mono typefaces are licensed under the SIL Open Font
+License, Version 1.1: see _dsa-tokens/fonts/Inter-OFL.txt and
+_dsa-tokens/fonts/JetBrainsMono-OFL.txt.
+
+The Voltaire name, mark and wordmark, the investor presentation's content and
+its figures (assets/figures/, listed in FIGURES.md) are not covered by this
+repository's license.

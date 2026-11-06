@@ -1,0 +1,1342 @@
+/* =========================================================================
+   surface-shell — canonical implementation.
+
+   The shared page shell for a family of public surfaces: an identity mark,
+   surface identity, title, lede, an optional status badge, an optional
+   payload control slot, the rule that opens the payload, and the footer that
+   closes the page. The shell owns the chrome around the payload. It owns no
+   payload.
+
+   This is a canonical pattern, vendored downstream at a pinned commit. It
+   carries no organization's identity: a consuming project supplies its own
+   Tier 3 — the same boundary the output-artifact pattern already draws.
+
+   It composes existing var() roles and introduces no token and no palette
+   color. Exactly ONE raw visible-paint literal appears: the focus glow's
+   translucent white, which the repo README's hover/press/focus contract
+   specifies verbatim and for which no token exists. The `transparent` keyword
+   also appears, but it paints nothing — it is the alpha endpoint of the
+   token-derived resting underline, the mechanism by which the emphasis accent
+   is reduced in dose without being mixed toward another color. Adding any
+   other raw color value here is a defect.
+
+   That assertion governs color, and only color. Geometry, tracking, and border
+   widths do carry raw values where no token expresses them. Text size is the
+   one dimension held absolutely: every font-size in this file resolves through
+   the foundation's type scale, and a raw numeric size here is a defect.
+
+   Because it frames a whole page, this pattern owns that page's landmark
+   structure, and the required elements are part of the contract, not a
+   styling preference: <header class="surface-head">, <main
+   class="surface-payload">, <footer class="surface-footer">. One banner, one
+   main, one contentinfo per surface. Selectors below are class-based, so
+   restyling never depends on the element — but substituting a <div> for any
+   of the three removes a landmark a nonvisual reader navigates by.
+
+   Required markup, slots, and the vendoring contract: README.md in this
+   directory. Rendered specimen: patterns/_preview/surface-shell.html.
+   ========================================================================= */
+
+/* ---------- Page container ---------- */
+.surface {
+  /* Pattern-scoped, never :root. surface-text-link.css declares its own
+     equivalent on its own selector: the two files are separately vendorable and
+     separately pinned, and sharing one global would let a consumer that updated
+     the module while holding an older shell silently inherit the older value,
+     with no audit of either file showing it. One formula, two owners.
+
+     Mixed with `transparent`, not with a foreground role — the accent's own hue
+     at half dose. Mixing toward --fg-1 instead produces a plum that reads as a
+     darker text color rather than a quieter magenta.
+
+     TWO consumers inside this file: the breadcrumb, and the operable rows of the
+     navigation panel's hierarchy. Both are textual destinations that need a rule
+     beneath the words; the footer is not among them any more, because a footer
+     destination is a shaped compact action and its geometry already says it is
+     operable. */
+  --surface-shell-link-underline:
+    color-mix(in srgb, var(--ask-emphasis-magenta) 50%, transparent);
+
+  /* The content measure has ONE owner. The fixed desktop mark aligns to this
+     same edge, and two independent 1100px literals would drift the moment
+     either moved. Pattern-scoped like the underline above, and inherited by
+     everything inside the surface that needs it. */
+  --surface-shell-content-max: 1100px;
+
+  max-width: var(--surface-shell-content-max);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6) var(--space-10);
+}
+
+/* The payload landmark. The shell requires the <main> element — it is the
+   page's one main landmark — and declares no layout for it, because payload
+   layout is the consuming surface's. The class exists as a stable hook for
+   that surface to target; the shell deliberately leaves it unstyled. */
+
+/* ---------- Header ---------- */
+.surface-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+/* Grows into the width the optional control slot does not take. min-width: 0 is
+   load-bearing beside flex-grow: without it a flex item's automatic minimum size
+   is its content, so a long unbreakable title would push the header wider than
+   the container instead of letting the lede wrap inside it. */
+.surface-head-main { flex: 1 1 auto; min-width: 0; }
+
+/* Optional right-hand control slot. A surface that needs no control omits the
+   element entirely, so nothing is reserved and the header does not shift. */
+.surface-head-aside { flex-shrink: 0; }
+
+/* ---------- Identity mark ----------
+   A SLOT, not a mark. The shell owns the width, the alignment, and the
+   optional mode-pairing mechanism. The consuming surface owns everything
+   inside it: the asset or inline SVG, whether there is a per-mode pairing,
+   and the accessible name.
+
+   The width is FIXED at every breakpoint. The same 116px on a 320px phone and
+   a 1280px desktop is what makes the mark read as the same object across a
+   fleet of surfaces; the narrow-viewport rule at the foot of this file
+   restacks the header, it does not rescale this. Rendered HEIGHT is the
+   consumer's, since the child keeps its own aspect ratio — a square mark is
+   taller here than a wide wordmark. A surface that wants its wordmark to
+   become the content column at a narrow viewport is describing a different
+   composition, and it owns that composition outside this generic shell rather
+   than redefining the slot.
+
+   The accessible name belongs on the WRAPPER and never on a child. A name
+   carried by the light mark disappears with that element when dark mode hides
+   it, leaving the visible mark unnamed; the wrapper's name is mode-independent,
+   so it survives every mode. Two wrapper forms are valid, and which one applies
+   depends on whether the mark is also navigation: a non-interactive
+   <div role="img" aria-label>, or a native <a href aria-label> with NO
+   role="img" on it. See README.md §The identity mark.
+
+   One mark or two: a single responsive SVG or <img> needs neither modifier
+   class and is always shown. A surface wanting a per-mode pairing supplies
+   both children, and the shell shows exactly one per resolved mode.
+
+   Why CSS and not <picture>/srcset: a <picture> does react to environment
+   changes — the HTML standard requires it — but its media queries can only
+   see the ENVIRONMENT. They cannot see this design system's explicit DOM
+   theme state, which is how a consumer forces a mode. CSS sees both. */
+.surface-mark {
+  display: block;
+  width: 116px;
+  margin-bottom: var(--space-5);
+}
+.surface-mark > * { display: block; width: 100%; height: auto; }
+
+/* A LINKED mark. The mark slot has two valid wrapper forms (README §The identity
+   mark): a non-interactive <div role="img">, or — where the mark is also home
+   navigation — a native <a> carrying the accessible name, with no role="img" on
+   it, because the image role makes descendants presentational and would prune
+   the link from the accessibility tree. The shell owns the anchor's chrome so
+   every consumer inherits it rather than re-deriving it: the foundation
+   underlines anchors, which reads as a rule under the wordmark, and the
+   interaction limbs are the repo README's contract. */
+a.surface-mark {
+  border-bottom: none;
+  transition:
+    opacity var(--dur-2) var(--ease-out),
+    transform var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+a.surface-mark:hover { opacity: 0.92; }
+a.surface-mark:active { transform: scale(0.97); }
+a.surface-mark:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ask-white), 0 0 0 4px rgba(255, 255, 255, 0.25);
+}
+
+/* A TRIGGER mark. Where the surface adopts responsive navigation, the driver
+   upgrades the authored anchor in place into a native button that discloses the
+   navigation panel — see §Responsive navigation. The chrome is the anchor's,
+   because it is the same object wearing the same mark; what differs is only the
+   UA button box, which is reset here. Authoring a button directly is valid but
+   forfeits the no-JS home destination, so the anchor is the documented source. */
+/* The runtime REPLACES the authored anchor with this element, so it inherits
+   none of `.surface-mark`'s box — including the mark-to-title gap, which is the
+   shell's and not a per-instance choice. Declaring `margin: 0` here deleted that
+   gap for the one placement that is still in normal flow: the mobile opening
+   mark. Desktop hid it, because the fixed-mark rule zeroes the margin on
+   purpose, and so does the seated trigger; both of those are MORE SPECIFIC and
+   still win. */
+button.surface-mark {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  transition:
+    opacity var(--dur-2) var(--ease-out),
+    transform var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+button.surface-mark:hover { opacity: 0.92; }
+button.surface-mark:active { transform: scale(0.97); }
+button.surface-mark:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ask-white), 0 0 0 4px rgba(255, 255, 255, 0.25);
+}
+/* Focus returns to this trigger after every close, which is right. Painting a
+   keyboard indicator for a TOUCH is not: iOS Safari matches :focus-visible on
+   programmatic focus whatever began the interaction, so a tap-to-close left the
+   mark wearing a bright white ring. The driver sets this attribute only when the
+   close came from a pointer, and removes it on the trigger's blur or the next
+   keypress — so a hardware keyboard on a phone or tablet keeps its indicator,
+   which a coarse-pointer media query would have taken away. */
+button.surface-mark[data-surface-nav-pointer-focus]:focus-visible {
+  box-shadow: none;
+}
+
+/* Optional per-mode pairing. It must track EVERY dark path the foundation
+   defines, or a consumer gets dark tokens under a light mark. As of
+   colors_and_type.css there are exactly three, and all three are mirrored
+   below in the foundation's own order:
+
+     @media (prefers-color-scheme: dark)   OS, under the no-override guard
+     :root[data-theme="dark"]              explicit attribute
+     .theme-dark                           explicit class
+
+   Adding a fourth path to the foundation without adding it here is a defect.
+   These follow the base rule above deliberately: at equal specificity the
+   later declaration wins, which is what hides the dark mark by default. */
+.surface-mark-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .surface-mark-light { display: none; }
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .surface-mark-dark { display: block; }
+}
+:root[data-theme="dark"] .surface-mark-light { display: none; }
+:root[data-theme="dark"] .surface-mark-dark { display: block; }
+.theme-dark .surface-mark-light { display: none; }
+.theme-dark .surface-mark-dark { display: block; }
+
+/* ---------- Expanded identity — OPTIONAL ----------
+   For an identity whose symbol and wordmark are separate things, and whose
+   symbol must sometimes stand alone. The mark opts in with
+   data-surface-identity="expanded" and supplies its two parts as children:
+   .surface-identity-symbol and .surface-identity-wordmark, each holding its own
+   correctly bounded artwork, with the same light/dark pairing as any mark.
+
+   The page opens on the full lockup, at the width of the content column. Where
+   the surface adopts navigation, the symbol alone becomes the control: on
+   desktop it moves into the persistent mark's place, changing size, as the
+   wordmark leaves with the page, and on a phone the seated control carries the
+   symbol alone.
+   A single-mark surface is unaffected by everything here.
+
+   THE COMPOSITION IS THE CONSUMER'S, the layout is the shell's. The consumer
+   declares, from its own source lockup, the lockup's aspect ratio and each
+   part's box within it, as percentages of the lockup's width and height. The
+   shell scales that composition to the column, so it keeps its proportions at
+   every width, and never infers which part of the artwork is the symbol.
+
+     --surface-identity-ratio                   the lockup's width / height
+     --surface-identity-symbol-x, -y, -w, -h    the symbol's box, in %
+     --surface-identity-wordmark-x, -y, -w, -h  the wordmark's box, in %
+
+   They are inherited, so the consumer declares them once, on .surface, and
+   they reach both the authored link and the element the runtime puts in its
+   place. Without them the lockup has no size, so an undeclared composition
+   draws nothing and shows at once, rather than the shell inventing one. With
+   navigation the runtime goes further: an undeclared composition is withdrawn,
+   and the symbol stands in the slot as a single mark. */
+.surface-mark[data-surface-identity="expanded"],
+.surface[data-surface-identity="expanded"] .surface-identity {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--surface-identity-ratio, auto);
+  margin-bottom: var(--space-5);
+}
+.surface-mark[data-surface-identity="expanded"] > .surface-identity-symbol,
+.surface[data-surface-identity="expanded"] .surface-identity > .surface-identity-symbol {
+  position: absolute;
+  left: var(--surface-identity-symbol-x, 0);
+  top: var(--surface-identity-symbol-y, 0);
+  width: var(--surface-identity-symbol-w, 0);
+  height: var(--surface-identity-symbol-h, 0);
+}
+.surface-mark[data-surface-identity="expanded"] > .surface-identity-wordmark,
+.surface[data-surface-identity="expanded"] .surface-identity > .surface-identity-wordmark {
+  position: absolute;
+  left: var(--surface-identity-wordmark-x, 0);
+  top: var(--surface-identity-wordmark-y, 0);
+  width: var(--surface-identity-wordmark-w, 0);
+  height: var(--surface-identity-wordmark-h, 0);
+}
+/* Width and height only: display stays with the light/dark pairing above. */
+.surface-identity-symbol > img,
+.surface-identity-symbol > svg,
+.surface-identity-wordmark > img,
+.surface-identity-wordmark > svg {
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+}
+/* The control fills the symbol's slot wherever it is in flow, and its
+   artwork fills the control, as it fills the slot without JavaScript. */
+.surface[data-surface-identity="expanded"] .surface-identity-symbol > button.surface-mark {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.surface[data-surface-identity="expanded"] .surface-identity-symbol > button.surface-mark > * {
+  width: 100%;
+  height: 100%;
+}
+/* Withdrawn (no declared composition): the symbol is a single mark in the
+   slot, and the wordmark is not shown. */
+.surface:not([data-surface-identity="expanded"]) .surface-identity > .surface-identity-wordmark {
+  display: none;
+}
+
+/* ---------- Identity ---------- */
+/* The structural identity line, on the STRUCTURAL-LOCATOR role: mono, Body
+   size, light weight, tight tracking. Mono belongs to this role rather than to
+   the whole primary-label family, and it belongs to BOTH title forms — the
+   plain heading and the breadcrumbed title alike, since both
+   carry `.surface-title`. A panel primary label (`.surface-panel-title`) takes
+   Inter on the same size, weight and tracking.
+
+   THE TWO TITLE FORMS SHARE ONE LEADING; THE PANEL LABEL DOES NOT. Both
+   .surface-title forms sit on 1.16. The panel label keeps --lh-heading (1.12),
+   because it is a single-line label in a different implementation and the
+   adjustment below was earned by a condition it does not have.
+
+   1.16 is where two measurements meet. The breadcrumb's old pattern-local 1.35
+   was measured against an underline that was a BORDER, and it survived the
+   change to a text decoration with its own offset and skip-ink behaviour by
+   inertia; re-measured, it is visibly loose. But --lh-heading alone left only
+   2px between the underline and the next line's glyphs at 320-414 in both
+   themes — clear, and visibly cramped on device. 1.16 adds 0.96px per line at
+   24px: enough to breathe, far short of 1.35.
+
+   That value is the STRUCTURAL LOCATOR's own metric, owned here. It is not a
+   foundation token and nothing else should inherit it.
+
+   The family split is allocated per selector; it is never derived from what an
+   instance happens to say. Same size, weight and tracking; different family,
+   and one deliberate leading difference. Do not conform either to the other. A title is a locator rather than a display
+   heading, which is why it sits on Body and not on an H-step; it is still a
+   title, which is why it does not sit on the supporting step its own lede
+   occupies.
+
+   Light weight is deliberate and is the foundation's, not a local choice: the
+   repo README calls the light weights deliberate, and a vendorable pattern
+   that shipped a heavier title would push it into every downstream consumer. */
+.surface-title {
+  font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-light);
+  line-height: 1.16;                /* the structural locator's own metric; see above */
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+/* The two classes do not share a scope. .org is the outer owning / public-root
+   context and is valid in BOTH title forms — static owning context in a plain
+   title, the outermost ancestry segment in a breadcrumb. .page is the inert
+   CURRENT LEAF inside a breadcrumb path only, at any depth there: a family root
+   that is the page you are on takes it exactly as a deeper current page does. An
+   unclassed segment carries no class and keeps the strongest foreground — the
+   local surface label in a plain title, an intermediate ancestor in a breadcrumb.
+
+   Currentness and linkability are separate axes: a current leaf is unlinked
+   BECAUSE it is current, which is never a reason to omit .page, and ordinary
+   static context may lack an href without becoming .page. */
+.surface-title .org { color: var(--fg-2); }   /* outer owning context, EITHER form */
+.surface-title .page { color: var(--fg-3); }  /* current leaf, BREADCRUMB paths only */
+
+/* Breadcrumb grammar. Every structural separator is `//` — never a single
+   slash — and the separator is a decorative span, so the glyph is uniform while
+   segment color stays free to express hierarchy: those are separate decisions.
+   Linkability is decided by destination, not by segment class: a segment with a
+   real ancestor or home destination is a link, a segment with no destination of
+   its own stays static, and the current segment is inert and carries
+   aria-current="page". An organization segment may be either, depending on the
+   consuming surface's own topology. The separators are aria-hidden because the
+   crumb structure is conveyed by the nav landmark, not by punctuation read
+   aloud between every segment. */
+/* No breadcrumb-specific leading. Both title forms inherit the explicit 1.16
+   structural-locator metric declared above on .surface-title, and the clearance
+   was re-measured rather than assumed — see the metric note. --lh-heading (1.12)
+   is the PANEL LABEL's metric; neither title form takes it. */
+.surface-breadcrumb { display: block; }
+.surface-title .sep { color: var(--fg-3); }
+/* A breadcrumb ancestor wraps as ordinary inline text, which makes this the
+   shell's one deliberate exception to the repo README's scale press. A scale
+   press needs a transformable box, and `display: inline-block` is that box —
+   but it also shrink-to-fits: an ancestor segment wider than the content column
+   stops fragmenting, swells to the FULL column, wraps inside its own box, adds
+   a line to the header, and drags its underline across the whole column instead
+   of under the text. Transform wants the box; wrapping text wants the fragments.
+   Wrapping wins here, so the press is non-geometric: hover raises the underline
+   to full magenta, and press adds the 0.92 opacity limb on top of that already
+   full-value rule. Neither state changes display, box construction, line
+   breaking, measured width, or fragment count. The identity mark is a
+   block-level slot and a footer destination is a compact action with a box of
+   its own, so both are objects a transform can act on rather than inline text
+   that fragments; both keep scale(0.97), the footer's now through
+   surface-action.css rather than through a rule here.
+   The :hover opacity declaration is an override, not a default. The foundation
+   binds `a:hover { opacity: 0.92 }` at (0,1,1), which reaches these links
+   outright and would make hover compute identically to press. Declaring it here
+   at (0,2,1) settles it on specificity rather than on load order: hover holds
+   opacity at its rest value so press stays distinct. The foundation rule stays
+   untouched for every other link. */
+/* The rest underline is a TEXT DECORATION carrying the accent at partial
+   opacity, not a --line-2 border. The old rest state measured 1.11:1 and 1.08:1
+   against the light gradient stops — present as texture, not legible as
+   information — and its hover brightening reached only 1.26:1.
+
+   The new resting value does not clear the strict 3:1 non-text floor either: it
+   measures 1.72:1 / 1.82:1 light and 2.11:1 / 2.23:1 dark. That is stated rather
+   than engineered away. Magenta's luminance sits so close to the light
+   gradient's that NO opacity reaches the floor there, full opacity included, and
+   the only value that would is a mix toward the foreground — which changes the
+   hue rather than the dose. ASK selected the saturated appearance knowingly; see
+   surface-text-link.css for the full accessibility disposition.
+
+   Hover holds opacity at 1 so press stays distinct, exactly as the previous rule
+   did and for the same reason: the foundation binds a:hover opacity at (0,1,1),
+   and this link cannot take a transform press because it fragments. */
+.surface-title a {
+  color: inherit;
+  border-bottom: none;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-skip-ink: auto;
+  text-decoration-color: var(--surface-shell-link-underline);
+  transition:
+    opacity var(--dur-1) var(--ease-out),
+    text-decoration-color var(--dur-2) var(--ease-out);
+}
+.surface-title a:hover {
+  opacity: 1;
+  text-decoration-color: var(--ask-emphasis-magenta);
+}
+.surface-title a:active {
+  opacity: 0.92;
+  text-decoration-color: var(--ask-emphasis-magenta);
+}
+/* Focus is a text-decoration underline here, and only here, because this link
+   fragments. Anything drawn around the BOX fails on fragmented inline text, and
+   all three were rendered before this rule was chosen: a box-shadow ring under
+   the default `slice` is drawn around the unbroken box and then cut, so it
+   opens on the cut edges; `box-decoration-break: clone` closes each fragment,
+   but the result is one ring per line rather than a single typographic
+   indicator; and a rectangular outline is a single shape only where
+   consecutive fragments overlap horizontally — at a 311px column the break is
+   `asymptotic system / key`, which does not, so it splits into one ring per
+   line. A text decoration is fragment-native: it follows each line's own text,
+   so there is no box to enclose and nothing to reach past.
+   --fg-1 is the existing theme-resolving default foreground role, so this needs
+   no new token, earns no --fg-high-contrast registration, and reads the same on
+   the quieter .org home link as on an ordinary ancestor. Rest and focus are ONE
+   text decoration: focus recolors it to --fg-1 and changes its thickness and
+   offset to 2px, so exactly one underline renders in every state and nothing
+   reflows. There is no border to clear and no second rule to stack.
+   Two properties of the indicator are worth naming so they are not mistaken
+   for defects. `text-decoration-skip-ink` is left at its initial `auto`, so the
+   underline breaks around descenders: that is per-glyph typographic clearance,
+   not a contour opening at a line break. And `:focus-visible` sits last among
+   the equal-specificity state rules, so while a link is focused its underline
+   is the focus indicator and the hover and active magenta limbs are suppressed;
+   active still dims the whole element, because this rule sets no opacity.
+   Measured at 320 / 360 / 375 / 393 / 414 in both themes: every fragment
+   carries the indicator, zero indicator pixels land on neighboring glyph ink,
+   and contrast is 3.50:1 and 4.00:1 against the light gradient stops, 10.25:1
+   and 12.26:1 against the dark. The identity mark does not fragment and keeps
+   the box-shadow glow; footer destinations take surface-action.css's attention
+   edge instead. */
+.surface-title a:focus-visible {
+  outline: none;
+  box-shadow: none;
+  text-decoration-color: var(--fg-1);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+/* The lede is the foundation's SMALL supporting-text role: --fs-small /
+   --fw-light / --lh-body. It is supporting prose a reader is meant to read,
+   not a label, so it sits on the Small step rather than the Caption step —
+   Caption is the 14px uppercase role.
+
+   The footer below no longer shares this step, and no longer declares a type
+   role at all: its items ARE compact actions, so their family, size, weight,
+   tracking and foreground resolve from surface-action.css. The footer row is
+   layout. The lede's weight stays at Light because 300 is where Small is
+   defined.
+
+   `--lh-body` is the tokenized line-height nearest the README's 18 / 1.40
+   figure; the repo defines no 1.40 token, and the `.small` utility declares no
+   line-height of its own.
+
+   No max-width. The lede uses the full header-main width, which the flex rule
+   above grows into whatever the optional control slot leaves. A per-surface
+   measure is the consuming surface's call, not the shell's. */
+.surface-lede {
+  color: var(--fg-2);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-body);
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-sans);
+}
+
+/* Optional status note beneath the lede — classification, environment, or
+   another short standing fact about the surface.
+
+   It carries no button geometry, because it is not a button: the repo README
+   puts pills on interactive elements only, and this slot is inert on every
+   surface that uses it. A decorative `///` opens the row instead, marking it
+   as a note rather than a control.
+
+   The marker is generated content, so no consuming surface edits its markup to
+   receive it. It is drawn with empty alt text where the browser supports the
+   `content: "…" / ""` alt syntax, so the note is announced as its own words
+   and not as three slashes; the plain declaration below it is the fallback for
+   browsers that do not, which take the marker with its slashes rather than
+   losing it. The `//` inside a payload string is the author's, not this
+   rule's — the shell prefixes, it never rewrites.
+
+   The marker takes `color: inherit`, so it is the same ink as the words it
+   opens. Giving it its own quieter foreground built a second hierarchy inside
+   a single short note, and it broke the one thing a consumer's color-only
+   override should be able to do: recolor the note whole. Inheriting means the
+   design system's gallery reads magenta throughout, and a consumer that sets
+   the note to a quieter foreground gets the marker at that foreground too,
+   with no page-specific exception anywhere.
+
+   `white-space: normal` is declared, not merely left undeclared. The property
+   inherits, so dropping the old `nowrap` would only mean "whatever the
+   consuming page happens to impose" — and a surface that nests this slot under
+   an inherited `nowrap` would still refuse to wrap while the contract claimed
+   otherwise. A vendorable pattern owns the behavior it documents. */
+.surface-badge {
+  display: block;
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ask-emphasis-magenta, var(--fg-1));
+  white-space: normal;
+}
+.surface-badge::before { content: "/// "; color: inherit; }
+@supports (content: "a" / "b") {
+  .surface-badge::before { content: "/// " / ""; }
+}
+
+/* ---------- The structural title, visually hidden — OPTIONAL ----------
+   For a brand-led opening whose identity already shows the surface's name, so
+   a visible title would repeat it: an expanded identity's wordmark, for one.
+   The plain title opts in with data-surface-title="visually-hidden". It stays
+   the document's h1 and the source of the panel's current row, in the
+   accessibility tree, and gives up its box, so the header's next item follows
+   the identity directly.
+
+   Only the PLAIN form, and only while it holds nothing focusable: a breadcrumb
+   title is a child of its landmark, not of .surface-head-main, and a hidden
+   link would take focus where nothing is drawn. A browser without :has() drops
+   the rule, and the title simply stays visible. */
+.surface-head-main > .surface-title[data-surface-title="visually-hidden"]:not(:has(a[href], button, input, select, textarea, [tabindex])) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.surface-head-main > .surface-title[data-surface-title="visually-hidden"]:not(:has(a[href], button, input, select, textarea, [tabindex])) + :is(.surface-lede, .surface-badge) {
+  margin-top: 0;
+}
+
+.surface-rule {
+  border: 0;
+  border-top: 1px solid var(--line-1);
+  margin: var(--space-6) 0 var(--space-7);
+}
+
+/* ---------- Footer ----------
+   Right-aligned, always. The reader's eye travels top-left to bottom-right, so
+   the footer sits where the reading path ends — the mirror of the flush-left
+   header above. This is the shell's rule, not a per-surface choice: a
+   left-aligned footer restarts the eye at a column the page has already
+   finished with.
+
+   THE ROW IS LAYOUT AND NOTHING ELSE. Its items are compact actions —
+   `<a class="surface-action surface-action--secondary" href="…">` — so
+   surface-action.css owns their family, size, weight, tracking, padding,
+   radius, fill, border, foreground, hover, press and focus. They stay anchors:
+   a destination is navigation, and a native button would trade
+   open-in-new-tab, copy-link and the rest for an appearance.
+
+   The former unboxed terminal-link role is RETIRED — no magenta text
+   decoration, no load-bearing inline-block, no footer-specific focus ring. Its
+   type declarations are retired with it, deliberately: leaving font-family,
+   size, tracking or color on the row would let an item that forgot its classes
+   inherit an approximation of the old treatment and look roughly correct. A
+   missing class should fail visibly. Any future non-action footer content
+   earns an explicit role of its own rather than inheriting one from the
+   navigation row.
+
+   Consuming surfaces still own WHICH destinations close the page. Right
+   alignment, wrap behavior, the row gap and the terminal margin are the
+   shell's. */
+.surface-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-5);
+  margin-top: var(--space-9);
+}
+
+/* Narrow viewports. What changes here is the header's ARRANGEMENT, not the
+   identity mark's scale: the head stacks and .surface-head-main takes the full
+   width because a stacked column has no aside to share it with. The mark stays
+   at its fixed 116px — see §The identity mark. A consuming surface that wants
+   the wordmark to become the column at a narrow viewport is describing a
+   different composition, and it owns that composition outside this generic
+   shell rather than redefining the shell's slot. */
+@media (max-width: 640px) {
+  .surface-head { flex-direction: column; }
+  .surface-head-main { width: 100%; }
+  .surface-head-aside { align-self: flex-start; }
+}
+
+/* =========================================================================
+   RESPONSIVE NAVIGATION — OPTIONAL
+   =========================================================================
+   Everything below is inert until `surface-shell.js` finds an authored
+   `<template class="surface-nav-source">` and marks the document ready. A
+   surface that declines navigation loads this stylesheet and acquires nothing:
+   no fixed mark, no seated unit, no terminal reserve, no scroll padding, no
+   scrollbar gutter. That gate is the whole reason the state attribute exists,
+   and it is why the navigation-only ROOT declarations below are safe.
+
+   THE MARK IS THE DISCLOSURE. In a navigation-enabled shell the identity mark
+   opens the panel at every placement — the persistent desktop mark, the mobile
+   opening mark, and the mobile seated mark. One meaning wherever it appears.
+   Exactly one trigger is operable and in the tab order at any instant; the
+   driver transfers operability atomically at the handoff.
+
+   ONE AUTHORED MARK. The consumer authors a single `<a class="surface-mark">`
+   with a real home destination. The driver upgrades that element in place and
+   derives the seated placement from the same payload. There is no second
+   authored mark tree to drift, and without JavaScript the anchor remains an
+   ordinary home link rather than a dead control.
+
+   ONE PANEL, TWO ENTRANCES. One native `<dialog>`, one content tree, one
+   interaction contract. Desktop enters as a drawer from the top, mobile as a
+   sheet from the bottom. Content, hierarchy, current-page state, focus entry
+   and return, close, dismissal and scroll lock are identical.
+   ========================================================================= */
+
+/* The authored navigation source. A <template> is inert by definition, so an
+   unenhanced page renders nothing from it and exposes no partial control. */
+.surface-nav-source { display: none; }
+
+/* Navigation-only ROOT geometry, gated on the driver-set state.
+   Deliberately root-scoped, and the one place this pattern declares anything
+   there: the terminal reserve has to reach BOTH the page container's padding
+   and the viewport's own scroll padding, and a value declared on .surface
+   cannot travel upward. It is namespaced, it is written by no other module,
+   and it does not exist at all unless this pattern's own driver put the
+   attribute there — which is a narrower blast radius than a global would be. */
+:root[data-surface-nav="ready"] {
+  --surface-nav-inset-b: max(20px, env(safe-area-inset-bottom, 0px));
+  --surface-nav-inset-r: max(20px, env(safe-area-inset-right, 0px));
+
+  /* RENDERED mark geometry, measured by the driver from the seated trigger's
+     own box. Never a constant: the aspect ratio of a consumer's mark is that
+     consumer's Tier 3, and hard-coding one here would make a wide wordmark's
+     proportions a property of the shell. The fallback is the slot width, which
+     is the shell's and is always true. */
+  --surface-nav-mark-block: 116px;
+  --surface-nav-gap: var(--space-5);        /* protected gap above the mark */
+  --surface-nav-fade: 48px;                 /* fade depth above the gap */
+  --surface-nav-footer-clear: var(--space-5);
+
+  /* viewport bottom -> TOP OF THE FADE */
+  --surface-nav-depth: calc(var(--surface-nav-inset-b) + var(--surface-nav-mark-block)
+                            + var(--surface-nav-gap) + var(--surface-nav-fade));
+  --surface-nav-reserve: calc(var(--surface-nav-depth) + var(--surface-nav-footer-clear));
+
+  /* viewport top -> BOTTOM OF THE RESTING DESKTOP MARK. Measured from the mark's
+     RESTING offset, not its settled one: the mark settles UPWARD by
+     --surface-nav-settle, so the resting position is the lowest it ever sits and
+     an opaque zone measured there covers it at every settle value — which is why
+     the desktop shield needs no per-frame geometry. --surface-nav-mark-block is
+     the driver's measurement of the same upgraded trigger the mobile placement
+     measures, so a consumer's own mark proportions govern here too. */
+  --surface-nav-top-depth: calc(var(--space-8) + var(--surface-nav-mark-block));
+
+  /* handoff progress 0..1, written by the driver from the OPENING mark's actual
+     viewport exit — never from a percentage of the document, because the
+     terminal reserve changes the document's height and a percentage would
+     retime itself whenever the footer, the content or the browser chrome moved */
+  --surface-nav-p: 0;
+  --surface-nav-settle: 0px;                /* desktop, 64 -> 40 over 24px */
+
+  /* The fade's LEADING EDGE, in the mask's own coordinate space. The 100% here
+     resolves against the mask positioning area of .surface-nav-fade, which is
+     the viewport box — so this is only meaningful where it is used, and it is
+     used in exactly one place. Declared here anyway so the two mask-image
+     declarations that consume it cannot drift apart. */
+  --surface-nav-fade-edge: calc(100% - var(--surface-nav-p) * var(--surface-nav-depth));
+
+  /* The gutter is reserved only where navigation exists, so a declining surface
+     never acquires permanent geometry from merely loading this file. It keeps
+     the page from shifting when the modal locks background scrolling. */
+  scrollbar-gutter: stable;
+}
+
+/* ---------- NAVIGATION MODE ----------
+   Geometry keys to a DRIVER-OWNED mode attribute, never to a raw width query.
+   Two reasons, and both are contracts rather than preferences.
+
+   FIRST, mobile mode is not a width. It is `narrow` OR `short and coarse`: a
+   landscape phone at 844x390 is wider than the desktop breakpoint and still
+   wants the lower-right mark, because a fixed top-left mark plus a top drawer
+   on a 390px-tall touch viewport is the case the override exists to prevent.
+   A pure width divide silently hands that device the desktop composition.
+
+   SECOND, a media query changes the instant the viewport does. If the panel is
+   open when a phone rotates, a query-keyed stylesheet would swap the panel from
+   drawer geometry to sheet geometry mid-exit, and no amount of script could
+   stop it. With the mode published as state, the driver holds the current
+   geometry until the close completes and commits afterwards. */
+:root[data-surface-nav-mode="desktop"] .surface[data-surface-nav="ready"] .surface-mark {
+  position: fixed;
+  top: calc(var(--space-8) - var(--surface-nav-settle));
+  /* aligned with the surface's CONTENT edge, from the single measure declared
+     on .surface: the box is that measure plus 2 x --space-6 of padding, so the
+     content edge sits at (100% - measure) / 2 once the viewport is wide enough
+     to show the gutter, and at the padding itself below that. */
+  left: max(var(--space-6), calc((100% - var(--surface-shell-content-max)) / 2));
+  width: 116px;
+  margin: 0;
+  z-index: 40;
+}
+/* The header reclaims the space the now-fixed mark left behind. */
+:root[data-surface-nav-mode="desktop"] .surface[data-surface-nav="ready"] .surface-head {
+  padding-top: calc(var(--surface-nav-mark-block) + var(--space-5));
+}
+:root[data-surface-nav-mode="desktop"] .surface-nav-seat { display: none; }
+
+/* ---------- Desktop: the same fade carrier, shielding the persistent mark ----
+   The mark is fixed chrome, so payload content scrolling beneath it painted
+   THROUGH it — the mark read as floating in front of the page rather than as
+   part of its chrome. The mobile seated mark never had that problem because it
+   has always carried a fade; this is the same contract at the other edge, on
+   the same DOM carrier, with the geometry mirrored.
+
+   The mobile field is a moving mask over a stationary paint. This one does not
+   move at all: the opaque zone is measured from the mark's RESTING offset,
+   which is the lowest it ever sits, so the settle travels entirely inside a band
+   that was already opaque. No p, no per-frame mask, nothing to pulse during the
+   64px -> 40px settlement.
+
+   THE RAMP ENDS EXACTLY WHERE CONTENT BEGINS, and that is what sets its depth
+   rather than a taste decision. In this mode .surface-head takes
+   `padding-top: mark-block + --space-5`, so the first payload pixel sits one
+   --surface-nav-gap below the resting mark's bottom edge. Ramping over that gap
+   puts the fade at zero opacity precisely where the title starts: at the top of
+   the page nothing is attenuated, and the band is invisible because it paints
+   the page's own gradient over the page's own padding. A deeper ramp would look
+   softer and would tint the title at scroll top. */
+:root[data-surface-nav-mode="desktop"] .surface-nav-fade {
+  position: fixed;
+  left: 0; right: 0; top: 0;
+  height: calc(var(--surface-nav-top-depth) + var(--surface-nav-gap));
+  z-index: 39;                      /* beneath the mark, above the payload */
+  pointer-events: none;
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+
+  -webkit-mask-image: linear-gradient(to bottom,
+                        #000 0,
+                        #000 var(--surface-nav-top-depth),
+                        transparent 100%);
+          mask-image: linear-gradient(to bottom,
+                        #000 0,
+                        #000 var(--surface-nav-top-depth),
+                        transparent 100%);
+}
+/* Hit shield over exactly the OPAQUE zone, and no further — the same rule the
+   mobile shield follows, for the same reason: a mask changes what is painted and
+   nothing about what is hit, so content scrolled fully out of sight under the
+   mark would otherwise still take a click. It stops at the ramp rather than at
+   the element's edge, because a band that still shows its content must still let
+   that content be used. A pseudo-element rather than a second authored node: the
+   mobile shield is a child of the seat, which this mode hides, and reaching into
+   the driver to re-parent it would disturb the seated unit to save one bounded
+   desktop carrier. Wheel and trackpad scrolling are unaffected — this intercepts
+   pointer activation, not scrolling. */
+:root[data-surface-nav-mode="desktop"] .surface-nav-fade::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: var(--surface-nav-top-depth);
+  pointer-events: auto;
+}
+
+/* ---------- Mobile: the opening mark leaves, a seated unit arrives ----------
+   The fade's EDGE and the mark travel as one, so content is always cleared
+   before it reaches the mark — but the fade's paint does not travel with
+   them, and the separation is the point. See .surface-nav-fade below. Seated
+   at p=1, entirely below the viewport at p=0; the driver drives p from the
+   opening mark's own rect. */
+:root[data-surface-nav-mode="mobile"] .surface-nav-seat {
+  position: fixed;
+  right: 0; bottom: 0; left: 0;
+  z-index: 40;
+  pointer-events: none;
+  height: var(--surface-nav-depth);
+  transform: translateY(calc((1 - var(--surface-nav-p)) * 100%));
+  will-change: transform;
+}
+/* STATIONARY FIELD, MOVING MASK — and the fade is a SIBLING of the seat
+   rather than a child, which is the whole of it.
+
+   `background-attachment: fixed` gives an element the viewport as its
+   background positioning area, but only while no ancestor is transformed.
+   Inside the seat — whose transform is what moves the unit — the fixed
+   attachment degrades to `scroll` and the positioning area collapses to the
+   fade's own box, which is --surface-nav-depth tall: 144px on a 390x844
+   phone, against an 844px viewport. Because --bg-gradient is a 45deg gradient, its axis
+   length and endpoint colors are functions of that box's diagonal: the fade
+   was not a phase-shifted copy of the page's gradient, it was a different
+   gradient, which is why it read as a hard rectangle rather than a soft
+   mismatch. README.md already warns a consuming surface off the same failure
+   by its other route, a re-stated `background` shorthand.
+
+   So the field claims the viewport by the SAME MECHANISM the canvas does,
+   rather than by reconstructing viewport dimensions in CSS. colors_and_type.css
+   binds `html, body` with `background-attachment: fixed`; this element declares
+   it too, and matching the mechanism is what makes the parity survive the
+   engines where lvh, dvh and the fixed-position containing block disagree.
+   Reconstructing the box with 100dvh would be a second opinion about the
+   viewport, and a second opinion is exactly what a seam is. */
+/* KNOWN iOS SAFARI LIMITATION — accepted, not a defect awaiting a patch here.
+   After fast UPWARD inertial scrolling, this fixed-attachment gradient field may
+   keep painting a stale state on real iPhone Safari until a subsequent small
+   scroll repaints it. It is intermittent, it has not reproduced in desktop
+   device emulation, and NO ROOT CAUSE IS ESTABLISHED — in particular this is not
+   a claim about the progress value, the mask, or WebKit's compositing of a fixed
+   background. Settled-frame spatial parity holds; temporal pixel parity during
+   iOS inertial scrolling is not claimed.
+
+   The gradient treatment is retained BY RULING, not by omission: the alternative
+   that removes the behaviour entirely is a permanently visible glass shelf, and
+   it was rejected on readability.
+
+   Do not add forced-repaint ticks, epsilon nudges to p, scroll-direction
+   branches, or UA-specific behaviour here without real-iPhone A/B evidence — the
+   failure mode of every one of them is working on one device and one gesture.
+   See README.md "Known iOS Safari limitation" and issue #133. */
+:root[data-surface-nav-mode="mobile"] .surface-nav-fade {
+  position: fixed;
+  inset: 0;
+  z-index: 39;                      /* beneath the seat's shield and trigger */
+  pointer-events: none;
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+
+  /* The same 48px ramp as before, relocated into viewport coordinates: the
+     boundary travels with p while the paint underneath stands still. At p=1
+     the ramp starts at (100% - depth), which is exactly where the seated
+     unit's top edge is, so no geometry changes. */
+  -webkit-mask-image: linear-gradient(to bottom,
+                        transparent 0,
+                        transparent var(--surface-nav-fade-edge),
+                        #000 calc(var(--surface-nav-fade-edge) + var(--surface-nav-fade)),
+                        #000 100%);
+          mask-image: linear-gradient(to bottom,
+                        transparent 0,
+                        transparent var(--surface-nav-fade-edge),
+                        #000 calc(var(--surface-nav-fade-edge) + var(--surface-nav-fade)),
+                        #000 100%);
+}
+
+/* Hit shield over exactly the region where the fade is OPAQUE, and no further:
+   mask transparency does not affect hit-testing, so shielding the whole unit
+   would block activation through a band that still looks clear. It intercepts
+   pointer activation of covered content and leaves the vertical pan to the
+   page. */
+:root[data-surface-nav-mode="mobile"] .surface-nav-shield {
+  position: absolute; left: 0; right: 0;
+  top: var(--surface-nav-fade); bottom: 0;
+  z-index: 1;
+  pointer-events: auto;
+  touch-action: pan-y;
+}
+:root[data-surface-nav-mode="mobile"] .surface-nav-trigger {
+  position: absolute;
+  right: var(--surface-nav-inset-r);
+  bottom: var(--surface-nav-inset-b);
+  z-index: 2;
+  pointer-events: auto;
+  margin-bottom: 0;
+}
+
+/* Terminal clearance: max(), never additive — and only where the seated unit
+   can actually appear. On a short page the reserve is REMOVED rather than
+   merely held at zero progress: reserving room for a unit that never seats
+   would manufacture the very scrolling the guard exists to prevent. */
+:root[data-surface-nav-mode="mobile"] .surface[data-surface-nav="ready"] {
+  padding-bottom: max(var(--space-10), var(--surface-nav-reserve));
+}
+:root[data-surface-nav-mode="mobile"][data-surface-nav="ready"] {
+  scroll-padding-bottom: var(--surface-nav-reserve);
+}
+
+:root[data-surface-nav-mode="mobile"] .surface[data-surface-nav-short] { padding-bottom: var(--space-10); }
+:root[data-surface-nav-short] { scroll-padding-bottom: 0; }
+:root[data-surface-nav-short] .surface-nav-seat,
+:root[data-surface-nav-short] .surface-nav-fade { display: none; }
+
+/* ---------- Expanded identity, with navigation ----------
+   THE COMPACT SIZE is the consumer's to declare, in px, on .surface:
+
+     --surface-identity-compact-height      the compact symbol's height, in both
+                                            placements; its width follows from
+                                            the artwork's aspect
+     --surface-identity-compact-max-inline  optional: a cap on that width, which
+                                            then sets the height instead
+
+   Undeclared, the shell's FOOTPRINT applies: the symbol alone is fitted, aspect
+   preserved, inside the slot's 116px width and a 52px block, about the box
+   this repository's own mark fills in the slot, so a symbol-only control has a
+   single-mark surface's block height and placement.
+
+   Every clearance follows the compact box the runtime measures, never a
+   constant: the desktop band behind the control, the phone's seated unit, the
+   terminal reserve and the scroll padding all key to its height, written as
+   --surface-nav-mark-block. The runtime writes the box itself onto the seated
+   control as --surface-identity-compact-w and -h. */
+:root[data-surface-nav="ready"] {
+  --surface-identity-compact-inline: 116px;
+  --surface-identity-compact-block: 52px;
+
+  /* Written by the runtime from measured boxes onto the element that uses each
+     one; these are only the values before its first measurement. */
+  --surface-identity-top: var(--space-8);   /* the desktop control's box */
+  --surface-identity-left: var(--space-6);
+  --surface-identity-w: 52px;
+  --surface-identity-h: 52px;
+  --surface-identity-r: 0;                  /* size-change progress 0..1, on the fade */
+  --surface-identity-compact-w: 52px;       /* the compact box, on the seat */
+  --surface-identity-compact-h: 52px;
+  --surface-identity-compact-top: calc(var(--space-8) - 24px);   /* the settled top, on the root */
+}
+/* With an expanded identity the band behind the persistent control is shown
+   only once the symbol is compact (its opacity is the size change's progress,
+   below), and the compact symbol always sits at the settled top. So the opaque zone ends
+   at the compact symbol's own bottom edge, rather than at a resting position
+   this control never takes; a consumer's fragment landing that clears the band
+   clears the control too. */
+:root[data-surface-nav="ready"][data-surface-identity="expanded"] {
+  --surface-nav-top-depth: calc(var(--surface-identity-compact-top) + var(--surface-nav-mark-block));
+}
+
+/* Desktop. The symbol is ONE fixed control whose box the runtime sets each
+   frame, so it is the same element, and the same trigger, from the full
+   lockup to the compact mark. Its box is its drawn size, never a transform of
+   a larger one, so the focus ring and the press feedback are the single
+   mark's at every size. Nothing here transitions, because the movement is the
+   scroll itself. The lockup stays in flow, so the header needs none of the
+   single mark's reserved padding. */
+:root[data-surface-nav-mode="desktop"] .surface[data-surface-identity="expanded"][data-surface-nav="ready"] .surface-identity .surface-mark {
+  position: fixed;
+  top: var(--surface-identity-top);
+  left: var(--surface-identity-left);
+  width: var(--surface-identity-w);
+  height: var(--surface-identity-h);
+  margin: 0;
+  z-index: 40;
+}
+:root[data-surface-nav-mode="desktop"] .surface[data-surface-identity="expanded"][data-surface-nav="ready"] .surface-head {
+  padding-top: 0;
+}
+/* The fade behind the persistent mark arrives with the compact mark. At the top
+   of the page it would cover the lockup, so it takes the size change's progress
+   as its opacity, and its hit shield engages only once the mark is compact. */
+:root[data-surface-nav-mode="desktop"][data-surface-identity="expanded"] .surface-nav-fade {
+  opacity: var(--surface-identity-r);
+}
+:root[data-surface-nav-mode="desktop"][data-surface-identity="expanded"]:not([data-surface-identity-compact]) .surface-nav-fade::before {
+  pointer-events: none;
+}
+
+/* Mobile. The opening control is the symbol in its slot, in flow; the seated
+   control is the symbol alone at the compact size, which may be larger than
+   the opening symbol on a narrow phone: the seat is its own element. */
+:root[data-surface-nav-mode="mobile"] .surface-nav-trigger[data-surface-identity-compact] {
+  width: var(--surface-identity-compact-w);
+  height: var(--surface-identity-compact-h);
+}
+
+/* ---------- The panel ----------
+   A native <dialog> opened with showModal(), so the background leaves the
+   accessibility tree, focus is trapped by the UA, and the panel is promoted to
+   the top layer without a z-index race. The UA box is reset EXPLICITLY: without
+   border-box the max-height bound would constrain the content box while padding
+   and safe-area compensation extended past it, recreating overflow at exactly
+   the short viewport the bound protects. */
+.surface-nav-panel {
+  box-sizing: border-box;
+  position: fixed;
+  margin: 0;
+  width: auto;
+  max-width: none;
+  padding: 0;
+  color: inherit;
+  background: var(--surface-glass-2);
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+  border: 1px solid var(--line-1);
+  max-height: 100dvh;
+  overflow: hidden;                 /* the inner element scrolls, not the box */
+  transition: transform var(--dur-3) var(--ease-out);
+}
+/* Transparent by explicit declaration. The panel is composed against the
+   surface's own gradient, and an unruled UA veil would alter that composition
+   without appearing in any rule anyone reviewed. */
+.surface-nav-panel::backdrop { background: transparent; }
+
+/* border-box on the INNER element too, for the same reason it is on the dialog.
+   The foundation declares no global box-sizing, so a content-box inner element
+   bounded at 100dvh would grow to 100dvh PLUS its padding PLUS the mobile
+   safe-area compensation, and the parent's overflow:hidden would clip the
+   excess — putting the last hierarchy row, the last utility, or the close
+   control out of reach on a long menu. That is the exact panel-overflow failure
+   the bound exists to prevent. min-height:0 keeps it shrinkable inside the
+   dialog's own flex/blockformatting context rather than floored at its content.
+
+   WHICH ELEMENT SCROLLS IS MODE-DEPENDENT. This is the mobile and default
+   behaviour: the inner element itself scrolls. The desktop override further
+   down moves the scroller to the hierarchy alone, so the action row stays put
+   while the tree scrolls behind it. */
+.surface-nav-panel-inner {
+  box-sizing: border-box;
+  max-height: 100dvh;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;     /* the panel scrolls; the page does not */
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* BOTH inset ends are declared in each direction, and the unused one is set to
+   `auto` explicitly. The UA's `dialog:modal` rule pins inset-block-start AND
+   inset-block-end to 0 and centers with `margin: auto`; declaring only `bottom`
+   leaves the UA's `top: 0` standing, the box becomes over-constrained against
+   `height: fit-content`, and the sheet silently renders as a top drawer. */
+:root[data-surface-nav-mode="desktop"] .surface-nav-panel {   /* drawer, from the top */
+  top: 0; bottom: auto; left: 0; right: 0;
+  border-top: 0;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  transform: translateY(-100%);
+}
+:root[data-surface-nav-mode="mobile"] .surface-nav-panel {    /* sheet, from the bottom */
+  bottom: 0; top: auto; left: 0; right: 0;
+  border-bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  transform: translateY(100%);
+}
+:root[data-surface-nav-mode="mobile"] .surface-nav-panel-inner {
+  padding-bottom: calc(var(--space-6) + var(--surface-nav-inset-b));
+}
+/* ---------- Mobile drag handle + swipe-to-close ----------
+   The handle is the ONLY element that captures the drag. `touch-action: none`
+   is scoped to it and appears nowhere else: putting it on the panel, the
+   hierarchy or the utility region would take the browser's own scrolling away
+   from the content, which is the failure this placement exists to avoid.
+
+   Hidden outside mobile — a desktop drawer has no swipe affordance, and an
+   inert visual handle would advertise a gesture that does nothing. */
+.surface-nav-handle { display: none; }
+
+/* MOBILE HEAD IS A CONTROL LINE PLUS THE HIERARCHY. Three columns with equal
+   1fr flanks put the handle at the panel's true centre while the close control
+   end-aligns in the right flank — centring without absolute positioning, so the
+   target can never be laid over the hierarchy. The tree spans the full width on
+   its own row beneath, at its usable width. */
+:root[data-surface-nav-mode="mobile"] .surface-nav-head {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  row-gap: var(--space-4);
+}
+/* THE CONTROL LINE IS THE TARGET; THE CLOSE BUTTON IS THE HOLE IN IT. Handle and
+   close share ONE grid cell: the handle spans the row's full width, and the close
+   control is painted over it, end-aligned, keeping its own pointer box. They are
+   siblings rather than nested, so a press on close simply never reaches the
+   handle's listener — no drag to cancel, and no event-cancellation trick.
+
+   A 64px target floating in a wide landscape panel was needlessly precise. This
+   costs no height: the row is already as tall as the handle's block size. */
+:root[data-surface-nav-mode="mobile"] .surface-nav-head > .surface-nav-handle {
+  grid-row: 1; grid-column: 1;
+}
+:root[data-surface-nav-mode="mobile"] .surface-nav-head > .surface-nav-close {
+  grid-row: 1; grid-column: 1;
+  justify-self: end;
+  position: relative;                            /* so the stacking is declared, */
+  z-index: 1;                                    /* not left to paint order      */
+}
+:root[data-surface-nav-mode="mobile"] .surface-nav-head > .surface-nav-tree {
+  grid-row: 2; grid-column: 1;
+}
+
+:root[data-surface-nav-mode="mobile"] .surface-nav-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: auto;                             /* the whole control line */
+  block-size: var(--space-7);                    /* the row's height, unchanged */
+  touch-action: none;                            /* SCOPED to the control line */
+  cursor: grab;
+}
+/* INTERACTION GEOMETRY IS NOT VISIBLE GEOMETRY. The element above is the pointer
+   target and is finger-sized; the bar a reader actually sees is this
+   pseudo-element. Sizing the visible bar as the target left only the bar's own
+   height to land on, which made the gesture feel broken even though it was
+   implemented correctly. The pseudo-element carries no box of its own in the a11y tree and
+   adds no node to author. */
+:root[data-surface-nav-mode="mobile"] .surface-nav-handle::before {
+  content: "";
+  display: block;
+  width: 2.25rem;                                /* the visible bar */
+  height: 0.25rem;
+  border-radius: 999px;
+  background: var(--fg-3, currentColor);
+  opacity: 0.35;
+}
+
+/* While a finger is on the handle the sheet tracks the pointer directly, so the
+   easing that governs open/close motion must not also be interpolating toward
+   each move event — that reads as lag against the finger. Restored the moment
+   the gesture ends, which is what makes the insufficient-drag return animate. */
+.surface-nav-panel.is-dragging { transition: none; }
+
+/* The open state has to OUTRANK the mode rules that set the closed transform.
+   Both of those are :root + attribute + class, so a bare
+   `.surface-nav-panel.is-open` loses on specificity and the panel stays parked
+   off-screen while every other signal — open, :modal, aria-expanded, the focus
+   trap — reports that it arrived. Keying this on the same attribute puts it one
+   class ahead, and the failure mode is why it is not left to source order. */
+:root[data-surface-nav-mode] .surface-nav-panel.is-open { transform: translateY(0); }
+
+/* ---------- Panel hierarchy ----------
+   A nested list, not a verticalized breadcrumb and not a stack of identical
+   pills. Tier is carried by indentation and by the branch guide, because a
+   uniform row treatment would flatten exactly the structure the panel exists to
+   express. Compact actions stay where they belong: utilities and the footer. */
+.surface-nav-tree { display: block; }
+.surface-nav-level { list-style: none; margin: 0; padding: 0; }
+.surface-nav-level .surface-nav-level {
+  margin-left: var(--space-3);
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--line-2);
+}
+.surface-nav-row {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  padding: var(--space-2) var(--space-3);
+  margin: 2px 0;
+  border-radius: var(--radius-sm);
+  color: var(--fg-1);
+}
+/* Full-row target, and the row is the anchor rather than a link inside a row —
+   the panel's own equivalent of the full-panel link form.
+
+   AN OPERABLE ROW CARRIES THE SHELL'S MAGENTA TEXT AFFORDANCE, the same
+   resting rule the breadcrumb uses. The glass row-fill is a HOVER response, so
+   on its own it leaves the resting state with nothing saying the words are
+   operable — the hierarchy would read as a diagram of the site rather than a
+   set of destinations. Shape communicates operability for a compact action;
+   text needs the rule beneath it.
+
+   `--surface-shell-link-underline` therefore has TWO consumers in this file:
+   the breadcrumb and these rows. It does NOT regain the footer, whose
+   destinations are compact actions. */
+a.surface-nav-row {
+  border-bottom: none;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-skip-ink: auto;
+  text-decoration-color: var(--surface-shell-link-underline);
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    text-decoration-color var(--dur-2) var(--ease-out);
+}
+a.surface-nav-row:hover {
+  background: var(--surface-glass);
+  color: var(--fg-1);
+  opacity: 1;
+  text-decoration-color: var(--ask-emphasis-magenta);
+}
+a.surface-nav-row:active {
+  background: var(--surface-glass-2);
+  text-decoration-color: var(--ask-emphasis-magenta);
+}
+/* The FULL-ROW ring stays the focus indicator here, and the resting underline
+   stays visible beneath it. These rows are blocks and do not fragment, so the
+   breadcrumb's fragment-native anatomy — which replaces the decoration with the
+   indicator — would be the wrong one to copy. */
+a.surface-nav-row:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ask-white), 0 0 0 4px rgba(255, 255, 255, 0.25);
+}
+/* The current page is inert and looks it — no underline, no hover, no target,
+   no destination. It is a span, never an anchor. */
+.surface-nav-row[aria-current="page"] {
+  color: var(--fg-3);
+  text-decoration: none;
+}
+
+/* Input modality, at the panel's ENTRANCE. The trigger already carries the
+   equivalent treatment on the RETURN path; this is the same browser behavior on
+   the way in, and it needs its own attribute rather than a second use of that
+   one, because the two states are cleared by different events and conflating
+   them would make each clear the other's.
+
+   Opening the panel moves focus to the first destination, which is correct and
+   stays — a modal needs an internal focus destination. What is wrong is
+   PAINTING a keyboard indicator for a touch: iOS Safari matches
+   :focus-visible on programmatic focus whatever began the interaction, so a
+   tapped-open panel showed a white ring around the first row and implied a
+   selection the user never made.
+
+   Only the keyboard indicator is suppressed. The row keeps its resting magenta
+   destination underline, its hover and active feedback, and its real focus —
+   the driver removes the attribute on the first keydown, on blur, and on close,
+   so a hardware keyboard on a phone or tablet gets the visible treatment the
+   moment it is used.
+
+   The entry target is not always a row. With no link in the tree, the driver
+   focuses the first enabled button, which is the close control — a compact
+   action, whose keyboard indicator is surface-action.css's attention edge rather
+   than a ring. Suppressing only the shadow would leave that edge painted, so the
+   close control takes its own rule, which also restores surface-action.css's
+   resting border. It applies only while the control is not hovered: under hover
+   the same edge is hover's, and hover feedback is kept. */
+.surface-nav-panel [data-surface-nav-pointer-entry-focus]:focus-visible:not(.surface-action) {
+  outline: none;
+  box-shadow: none;
+}
+.surface-nav-panel .surface-action[data-surface-nav-pointer-entry-focus]:focus-visible:not(:hover) {
+  border-color: var(--line-2);
+  box-shadow: none;
+}
+
+.surface-nav-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.surface-nav-utilities { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; }
+
+/* The close control sits with the hierarchy on MOBILE, where the sheet enters
+   from the bottom and its top-right corner is the corner nearest the thumb. On
+   DESKTOP the drawer enters from the top, so that same placement puts the
+   control at the edge the drawer came from — the least visible corner it has.
+
+   A FOOTER ROW, not an absolutely positioned button. The first attempt pinned
+   the close to the panel's lower-right and padded the scroller to keep content
+   out from under it. That put the control in the right corner and produced two
+   defects with one cause: it no longer shared a layout with the repository
+   utility, so the two could not align, and the padding that protected content
+   from an out-of-flow button became empty territory the drawer had no content
+   for. Both disappear once the control is simply IN the layout.
+
+   `display: contents` on the head is what makes that possible without touching
+   the DOM: the head's box is dropped, so the tree and the close become grid
+   items of the panel's own inner alongside the utilities, and the three can be
+   arranged as a scrolling hierarchy above one shared bottom row. DOM and
+   keyboard order are untouched — only the boxes change.
+
+   The scroller MOVES from the inner to the tree. That is what lets the drawer
+   fit its content when the hierarchy is short and cap at the viewport only when
+   it is long, while the action row stays put in both cases: `minmax(0, 1fr)`
+   takes content height in an auto-height container and yields to the max-height
+   bound when there is one. */
+:root[data-surface-nav-mode="desktop"] .surface-nav-panel-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "tree  tree"
+    "utils close";
+  overflow: hidden;                 /* the hierarchy scrolls, not the panel */
+}
+/* Alignment belongs to the FOOTER ITEMS, never to the container. `align-items:
+   end` on the grid makes every item content-sized, which silently defeats the
+   scroller: the hierarchy stops stretching to its row, overflows it instead of
+   scrolling inside it, and the rows past the fold become unreachable rather
+   than scrollable. The tree keeps the default stretch so its box IS its row. */
+:root[data-surface-nav-mode="desktop"] .surface-nav-utilities,
+:root[data-surface-nav-mode="desktop"] .surface-nav-close { align-self: end; }
+:root[data-surface-nav-mode="desktop"] .surface-nav-head { display: contents; }
+:root[data-surface-nav-mode="desktop"] .surface-nav-tree {
+  grid-area: tree;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-height: 0;                    /* or the row refuses to shrink and scroll */
+}
+:root[data-surface-nav-mode="desktop"] .surface-nav-utilities { grid-area: utils; }
+:root[data-surface-nav-mode="desktop"] .surface-nav-close { grid-area: close; }
+
+
+
+/* ---------- Background scroll lock ----------
+   The durable contract is that the background's scroll position stays INVARIANT
+   while the panel is open. The mechanism is not the contract: a UA that blocks
+   scrolling for a modal dialog satisfies it, and where one leaks the driver
+   restores the recorded position instead. This declaration is the first limb;
+   the driver carries the second. Deliberately NOT `position: fixed` on the
+   body — that would make the body a containing block for fixed descendants and
+   tear the seated mark off the viewport. */
+:root[data-surface-nav-locked],
+:root[data-surface-nav-locked] body { overflow: hidden; }
+:root[data-surface-nav-locked] body { touch-action: none; }
+
+/* ---------- Reduced motion ----------
+   Travel is removed by SNAPPING the same progress value in the driver, so the
+   two mark placements stay mutually exclusive and a trigger's operability
+   always matches what is on screen. Forcing the seated unit to translateY(0)
+   instead would seat it at the top of the page while the driver still held it
+   out of the tab order — two visible marks, one inoperable. */
+@media (prefers-reduced-motion: reduce) {
+  .surface-nav-seat,
+  .surface-nav-panel,
+  button.surface-mark,
+  .surface-nav-trigger { transition: none; }
+}

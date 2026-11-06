@@ -1,0 +1,62 @@
+/* Voltaire's local layout, layered over the vendored design-system-ASK modules.
+   It sets the lockup's composition, measure, list spacing and figure
+   placement only: no color, font, type size or token of its own. Edit this
+   file freely; never edit the vendored ones (VENDOR.md). */
+
+body { min-height: 100vh; }
+
+/* The 2025 Framer page's lockup, composed from its two parts for the shell's
+   expanded identity. Every number is the source lockup's own: the union of the
+   two parts' painted boxes in its coordinates (x 0.01 to 5717.57, y -0.07 to
+   961.66), and the box each part's artwork fills in it, so the composition is
+   the source's at every width. The shell makes the pyramid the navigation
+   control, 87px tall on a desktop and on a phone. */
+.surface {
+  --surface-identity-ratio: 5717.56 / 961.73;
+  --surface-identity-symbol-x: 0%;
+  --surface-identity-symbol-y: 0%;
+  --surface-identity-symbol-w: calc(959.41 / 5717.56 * 100%);
+  --surface-identity-symbol-h: 100%;
+  --surface-identity-wordmark-x: calc(1371.44 / 5717.56 * 100%);
+  --surface-identity-wordmark-y: calc(194.88 / 961.73 * 100%);
+  --surface-identity-wordmark-w: calc(4346.12 / 5717.56 * 100%);
+  --surface-identity-wordmark-h: calc(512.26 / 961.73 * 100%);
+  --surface-identity-compact-height: 87px;
+}
+
+/* The reading measure inside the shell's column, as the design system's own
+   keys set it. A comparison table takes the shell's whole column instead,
+   measured from the payload, and scrolls inside its own box below the
+   table's minimum. */
+.v-measure { max-width: calc(940px - 2 * var(--space-6)); }
+.surface-payload { container-type: inline-size; }
+.v-wide { width: 100cqi; }
+/* The fund structures' columns: the row headers narrow, the four structures
+   sharing the rest. */
+.v-fund { table-layout: fixed; }
+.v-fund col.v-row-head { width: 8rem; }
+
+/* In the shell's desktop mode a fragment target clears the seated mark. */
+:root[data-surface-nav-mode="desktop"] [id] { scroll-margin-top: calc(var(--surface-nav-top-depth) + var(--space-5)); }
+
+.v-list { margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
+
+/* A figure: a 2025 source vector, placed whole at the measure's width.
+   FIGURES.md lists each file and its light-theme derivative. */
+.v-figure { margin: 0; }
+/* :where() keeps this rule below the pairing classes, which decide display. */
+:where(.v-figure) img { display: block; width: 100%; height: auto; }
+.v-figure figcaption { margin-top: var(--space-2); }
+
+/* The light/dark pairing of a figure, on the same three paths as the shell's
+   identity mark: the OS setting under the no-override guard, the explicit
+   attribute and the explicit class. The light file shows by default. */
+.v-figure-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .v-figure-light { display: none; }
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .v-figure-dark { display: block; }
+}
+:root[data-theme="dark"] .v-figure-light { display: none; }
+:root[data-theme="dark"] .v-figure-dark { display: block; }
+.theme-dark .v-figure-light { display: none; }
+.theme-dark .v-figure-dark { display: block; }
