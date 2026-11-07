@@ -14,6 +14,7 @@ The Inter and JetBrains Mono typefaces are licensed under the SIL Open Font
 License, Version 1.1: see _dsa-tokens/fonts/Inter-OFL.txt and
 _dsa-tokens/fonts/JetBrainsMono-OFL.txt.
 
-The Voltaire name, mark and wordmark, the investor presentation's content and
-its figures (assets/figures/, listed in FIGURES.md) are not covered by this
-repository's license.
+The Voltaire name, mark and wordmark, the repository artwork that shows them
+(voltaire-ds-demo-banner.svg, voltaire-ds-demo-banner.png and og-image.png),
+the investor presentation's content and its figures (assets/figures/, listed in
+FIGURES.md) are not covered by this repository's license.

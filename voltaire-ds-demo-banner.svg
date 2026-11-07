@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2752" height="1536" viewBox="0 0 2752 1536">
+  <!-- Voltaire's light-theme identity, as voltaire.a-s-k.studio opens: the mark and wordmark lockup from
+       assets/voltaire-symbol-white.svg and assets/voltaire-wordmark-white.svg, placed in the lockup box
+       styles/voltaire.css declares, on design-system-ASK's light gradient. The README banner is this file
+       at 2752 x 1536; og-image.png is its full-width centered crop to 1200:630, rendered at 1200 x 630. -->
+  <defs>
+    <linearGradient id="ground" gradientUnits="userSpaceOnUse" x1="304" y1="1840" x2="2448" y2="-304">
+      <stop offset="0" stop-color="#D4C6E1"/>
+      <stop offset="1" stop-color="#E2D3F0"/>
+    </linearGradient>
+    <style>
+      .cls-1 {
+        fill: #ffffff;
+      }
+
+      .cls-2 {
+        fill: #bfb3d4;
+        stroke: #6a637f;
+        stroke-miterlimit: 10;
+        stroke-width: 4px;
+      }
+    </style>
+  </defs>
+  <rect width="2752" height="1536" fill="url(#ground)"/>
+  <svg x="275.2" y="582.8384" width="369.4298" height="370.3231" viewBox="0.01 -0.07 959.41 961.73">
+  <polyline class="cls-2" points="479.71 1.86 957.42 192.89 957.42 192.94 479.71 383.97 479.73 383.9 2.01 192.87 2.01 192.82 479.73 1.79"/>
+  <polyline class="cls-2" points="479.7 214.56 850.74 362.93 850.74 362.97 479.7 511.34 479.71 511.29 108.67 362.92 108.67 362.88 479.71 214.51"/>
+  <polyline class="cls-2" points="479.33 426.91 744.52 532.96 744.52 532.98 479.33 639.03 479.34 638.99 214.14 532.95 214.14 532.92 479.34 426.87"/>
+  <polyline class="cls-2" points="479.57 639.47 638.43 703 638.43 703.02 479.27 957.87 479.27 957.87 320.71 702.99 320.71 702.98 479.57 639.45"/>
+  </svg>
+  <svg x="803.2858" y="657.8788" width="1673.5142" height="197.2505" viewBox="1371.45 194.81 4346.12 512.26">
+  <path class="cls-1" d="M1706.16,707.07l-334.71-512.25h34.2l312.15,480.96,314.34-480.96h32.74l-336.17,512.25h-22.56Z"/>
+  <path class="cls-1" d="M2242.42,707.07c-107.69,0-148.44-50.21-148.44-123.7v-264.86c0-73.49,40.75-123.7,148.44-123.7h312.88c107.69,0,149.16,50.21,149.16,123.7v264.86c0,73.49-41.47,123.7-149.16,123.7h-312.88ZM2242.42,683.06h312.88c85.86,0,119.33-40.02,119.33-98.96v-265.58c0-59.67-33.47-98.96-119.33-98.96h-312.88c-85.13,0-118.6,39.29-118.6,98.96v265.58c0,58.94,33.47,98.96,118.6,98.96Z"/>
+  <path class="cls-1" d="M2811.42,707.07V194.82h29.83v488.24h444.58v24.01h-474.42Z"/>
+  <path class="cls-1" d="M3472.12,707.07V219.56h-280.14v-24.74h579.19v24.74h-269.95v487.51h-29.11Z"/>
+  <path class="cls-1" d="M4339.46,707.07l-311.43-480.24-315.79,480.24h-32.02l336.89-512.25h21.83l334.71,512.25h-34.2Z"/>
+  <path class="cls-1" d="M4440.59,707.07V194.82h29.83v512.25h-29.83Z"/>
+  <path class="cls-1" d="M5098.36,707.07l-137.52-231.39h-346.35v231.39h-29.83V194.82h403.11c107.69,0,148.44,50.21,148.44,123.7v33.47c0,82.95-61.12,122.97-133.88,122.97h-9.46l137.52,232.11h-32.02ZM5106.37,318.51c0-59.67-33.47-98.96-118.6-98.96h-373.28v231.39h373.28c85.13,0,118.6-39.29,118.6-98.96v-33.47Z"/>
+  <path class="cls-1" d="M5230.06,707.07V194.82h487.51v24.74h-457.68v204.46h437.31v24.01h-437.31v235.02h457.68v24.01h-487.51Z"/>
+  </svg>
+</svg>

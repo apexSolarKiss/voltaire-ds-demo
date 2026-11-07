@@ -1,5 +1,9 @@
 # Voltaire // design prototype
 
+![voltaire-ds-demo banner](voltaire-ds-demo-banner.png)
+
+**Live prototype:** [voltaire.a-s-k.studio](https://voltaire.a-s-k.studio/)
+
 A design prototype of the dormant Voltaire concept: the content of Voltaire's 2025 Framer page, implemented on [design-system-ASK](https://github.com/apexSolarKiss/design-system-ASK) under Voltaire's own identity. It provides no investment service and offers no signup, and the page collects nothing. Its statements are the 2025 presentation's, shown as they were written.
 
 The design system supplies the interface, unchanged: type, color, the page shell and its navigation, the compact actions, the document register with its comparison tables, in light and dark. This site supplies its identity and content: Voltaire's mark and wordmark, the presentation's words, its figures, placed as the 2025 source vectors, the comparison tables' words and their 2025 ratings, and the implementer's section labels, framing lines and "About this prototype".
@@ -23,6 +27,7 @@ The page loads nothing from another site. Its links to other sites are ordinary 
 | `assets/voltaire-symbol-white.svg` // `assets/voltaire-symbol-lavender.svg` | the pyramid, for the light and the dark theme |
 | `assets/voltaire-wordmark-white.svg` // `assets/voltaire-wordmark-lavender.svg` | the wordmark, for the light and the dark theme |
 | `favicon.svg` | the browser icon |
+| `voltaire-ds-demo-banner.svg` | the repository artwork: the light-theme lockup on the design system's light gradient. `voltaire-ds-demo-banner.png`, this README's banner, is its 2752 × 1536 export, and `og-image.png`, the page's link preview, its full-width centered crop to 1200:630, rendered at 1200 × 630 |
 
 | Not to edit | Why |
 |---|---|
@@ -43,4 +48,4 @@ The page loads nothing from another site. Its links to other sites are ordinary 
 
 The code in this repository is licensed under the Apache License 2.0 (`LICENSE`). `NOTICE` lists what else is included and under what terms. The design-system files are Apache-2.0, and the typefaces are under the SIL Open Font License 1.1.
 
-The Voltaire name, mark and wordmark, the presentation's content and its figures are not covered by this repository's license.
+The Voltaire name, mark and wordmark, the repository artwork that shows them, the presentation's content and its figures are not covered by this repository's license.
