@@ -10,7 +10,9 @@ body { min-height: 100vh; }
    two parts' painted boxes in its coordinates (x 0.01 to 5717.57, y -0.07 to
    961.66), and the box each part's artwork fills in it, so the composition is
    the source's at every width. The shell makes the pyramid the navigation
-   control, 87px tall on a desktop and on a phone. */
+   control, 87px tall on a desktop and on a phone. Both wordmarks fill the same
+   box; assets/identity.json records these numbers and tools/identity.py check
+   holds this block to them. */
 .surface {
   --surface-identity-ratio: 5717.56 / 961.73;
   --surface-identity-symbol-x: 0%;
