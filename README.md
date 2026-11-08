@@ -24,17 +24,22 @@ The page loads nothing from another site. Its links to other sites are ordinary 
 | `index.html` | the page: its content, sections and navigation |
 | `styles/voltaire.css` | local layout over the design system: the lockup's composition, the navigation control's compact height, measure, the comparison tables' width and columns, list spacing and figure placement |
 | `assets/figures/` // `assets/figures/light/` | the figures for the dark and the light theme; `FIGURES.md` lists each |
-| `assets/voltaire-symbol-white.svg` // `assets/voltaire-symbol-lavender.svg` | the pyramid, for the light and the dark theme |
-| `assets/voltaire-wordmark-white.svg` // `assets/voltaire-wordmark-lavender.svg` | the wordmark, for the light and the dark theme |
+| `assets/identity.json` | the identity's parts and the ones this site shows: which symbol, which wordmark, how the two are composed and which theme the repository artwork takes |
+| `assets/voltaire-symbol-light.svg` // `assets/voltaire-symbol-dark.svg` | the pyramid, for the light and the dark theme |
+| `assets/voltaire-wordmark-deconstructed-light.svg` // `-dark.svg` | the wordmark the site shows, for the light and the dark theme |
+| `assets/voltaire-wordmark-continuous-light.svg` // `-dark.svg` | the alternate wordmark, kept for reference and not shown |
+| `tools/identity.py` | checks the page, its stylesheet and the repository artwork against `identity.json`, and builds and exports the artwork from it. Authoring only: the site never runs it |
 | `favicon.svg` | the browser icon |
-| `voltaire-ds-demo-banner.svg` | the repository artwork: the light-theme lockup on the design system's light gradient. `voltaire-ds-demo-banner.png`, this README's banner, is its 2752 × 1536 export, and `og-image.png`, the page's link preview, its full-width centered crop to 1200:630, rendered at 1200 × 630 |
+| `voltaire-ds-demo-banner.svg` | the repository artwork: the dark-theme lockup on the design system's dark gradient, built by `tools/identity.py build`. `voltaire-ds-demo-banner.png`, this README's banner, is its 2752 × 1536 export, and `og-image.png`, the page's link preview, its full-width centered crop to 1200:630, rendered at 1200 × 630, both by `tools/identity.py render` |
 
 | Not to edit | Why |
 |---|---|
 | `_dsa-tokens/` // `_dsa-surface/` | design-system-ASK's files, copied unmodified. `VENDOR.md` lists them with their SHA-256, gives their load order and says how to re-sync them. A local difference goes in `styles/voltaire.css` instead. |
 | `licenses/design-system-ASK/` | design-system-ASK's own license and notice, which travel with its files. |
 
-**Identity.** The page opens on the lockup of Voltaire's 2025 Framer page, the inverted pyramid and the wordmark, across the column, with its `/// DESIGN PROTOTYPE` note. As the page scrolls, the wordmark leaves with it, and the pyramid alone stays as the navigation control: 87 px tall, top left on a desktop and bottom right on a phone. This is the design system shell's expanded identity. `styles/voltaire.css` declares the lockup's proportions, where each part sits in it, from the 2025 file, and the control's compact height; each part's artwork is bounded to its own painted edges, so the pyramid fills its control. The page's title, Voltaire, stays the document's heading and names the page in the navigation, but is not shown, because the wordmark already shows it.
+**Identity.** The page opens on the lockup as Voltaire's 2025 Framer page composed it, the inverted pyramid beside the wordmark, across the column, with its `/// DESIGN PROTOTYPE` note. As the page scrolls, the wordmark leaves with it, and the pyramid alone stays as the navigation control: 87 px tall, top left on a desktop and bottom right on a phone. This is the design system shell's expanded identity. `styles/voltaire.css` declares the lockup's proportions, where each part sits in it, from the 2025 file, and the control's compact height; each part's artwork is bounded to its own painted edges, so the pyramid fills its control. The page's title, Voltaire, stays the document's heading and names the page in the navigation, but is not shown, because the wordmark already shows it.
+
+**Selection.** `assets/identity.json` lists the identity's parts and names the ones the site shows: the pyramid, drawn point down, its cap meeting the stack at a single point; the deconstructed wordmark, the continuous lettering with parts of its O, A, R and E cut away; and the dark theme for the repository artwork. The continuous wordmark stays as an alternate. Both wordmarks fill the same box, so the lockup's numbers in `styles/voltaire.css` serve either. To change the selection, edit it there and point the page's four identity images at the chosen files, then run `python3 tools/identity.py build` and `render` for the artwork, and `check` until it passes. A part's `-light` or `-dark` suffix names the theme it is drawn for, not its color.
 
 **Light and dark.** The page follows the reader's system setting. In the dark theme the pyramid and the wordmark are the 2025 file's own colors: lavender outlines and lettering, and black plates. In the light theme the wordmark is white, and the pyramid takes the light figures' colors, the design system's diagram ink for its outlines and its node fill for its plates, so it sits with the figures and the stack still reads as stacked. Each figure shows its matching file; the two charts, "how it works" and the futures market share, take the style guide's colors in both themes (`FIGURES.md`).
 
@@ -48,4 +53,4 @@ The page loads nothing from another site. Its links to other sites are ordinary 
 
 The code in this repository is licensed under the Apache License 2.0 (`LICENSE`). `NOTICE` lists what else is included and under what terms. The design-system files are Apache-2.0, and the typefaces are under the SIL Open Font License 1.1.
 
-The Voltaire name, mark and wordmark, the repository artwork that shows them, the presentation's content and its figures are not covered by this repository's license.
+The Voltaire name, mark and wordmarks, the repository artwork that shows them, the presentation's content and its figures are not covered by this repository's license.

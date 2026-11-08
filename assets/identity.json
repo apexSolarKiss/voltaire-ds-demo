@@ -1,0 +1,67 @@
+{
+  "about": "Voltaire's identity parts and the selection this site shows. tools/identity.py checks the page against this file and builds the repository artwork from it. The page never reads it: it is an authoring record, not a runtime setting. A file suffix names the theme a part is drawn for, not the part's color.",
+  "selection": {
+    "symbol": "pyramid-point-down",
+    "wordmark": "deconstructed",
+    "lockup": "symbol-beside-wordmark",
+    "artwork_theme": "dark"
+  },
+  "symbols": {
+    "pyramid-point-down": {
+      "status": "current",
+      "description": "Three stacked plates, each overlapping the next, and a separate cap that meets the stack at a single point and overlaps nothing. Drawn point down.",
+      "light": "assets/voltaire-symbol-light.svg",
+      "dark": "assets/voltaire-symbol-dark.svg",
+      "size": [959.41, 961.73]
+    }
+  },
+  "wordmarks": {
+    "deconstructed": {
+      "status": "current",
+      "family": "Pirulen",
+      "treatment": "The continuous lettering with parts cut away and nothing added: the O's upper-left corner, the upper part of the A's left leg, the upper half of the R's stem and the E's spine. The V, L, T and I are unchanged.",
+      "contains_initial": true,
+      "light": "assets/voltaire-wordmark-deconstructed-light.svg",
+      "dark": "assets/voltaire-wordmark-deconstructed-dark.svg",
+      "size": [4346.124, 512.2576]
+    },
+    "continuous": {
+      "status": "alternate",
+      "family": "Pirulen",
+      "treatment": "The complete outlined lettering, uncut. The site's wordmark before the deconstructed one.",
+      "contains_initial": true,
+      "light": "assets/voltaire-wordmark-continuous-light.svg",
+      "dark": "assets/voltaire-wordmark-continuous-dark.svg",
+      "size": [4346.12, 512.26]
+    }
+  },
+  "lockups": {
+    "symbol-beside-wordmark": {
+      "description": "The symbol to the left of the complete word, as the 2025 Framer page composed it. Takes only a wordmark that contains the initial V.",
+      "requires_initial": true,
+      "box": [5717.56, 961.73],
+      "symbol": [0, 0, 959.41, 961.73],
+      "wordmark": [1371.44, 194.88, 4346.12, 512.26]
+    }
+  },
+  "references": [
+    {
+      "id": "orbitron-symbol-as-initial",
+      "status": "reference-only",
+      "description": "A 2025 study in customized lowercase Orbitron: the symbol, drawn flat, stands in for the V, followed by the letters oltaire. Its lockup needs a wordmark without the initial, so it cannot pair with symbol-beside-wordmark. No reusable vector of it is in this repository."
+    }
+  ],
+  "artwork": {
+    "master": "voltaire-ds-demo-banner.svg",
+    "size": [2752, 1536],
+    "lockup_width": 0.8,
+    "ground": {
+      "light": ["#D4C6E1", "#E2D3F0"],
+      "dark": ["#201D26", "#0A090C"]
+    },
+    "exports": [
+      { "path": "voltaire-ds-demo-banner.png", "size": [2752, 1536] },
+      { "path": "og-image.png", "size": [1200, 630], "crop": "full-width-center" }
+    ]
+  }
+}
