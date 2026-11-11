@@ -51,6 +51,6 @@ The page loads nothing from another site. Its links to other sites are ordinary 
 
 ## Licenses
 
-The code in this repository is licensed under the Apache License 2.0 (`LICENSE`). `NOTICE` lists what else is included and under what terms. The design-system files are Apache-2.0, and the typefaces are under the SIL Open Font License 1.1.
+The code and reusable interface implementation in this repository are licensed under the Apache License 2.0 (`LICENSE`). `NOTICE` lists what else is included and under what terms. The design-system files are Apache-2.0, and the typefaces are under the SIL Open Font License 1.1.
 
-The Voltaire name, mark and wordmarks, the repository artwork that shows them, the presentation's content and its figures are not covered by this repository's license.
+Voltaire identity artwork created by Andrew S Klug // ASK, including logos and wordmark artwork, is excluded from the Apache License 2.0. All rights reserved. Here that is the symbol and wordmark files in `assets/`, `favicon.svg` and the repository artwork that shows them: `voltaire-ds-demo-banner.svg`, `voltaire-ds-demo-banner.png` and `og-image.png`. The presentation's content and its figures keep their own rights and are not covered by this repository's license.
