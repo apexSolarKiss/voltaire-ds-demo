@@ -4,7 +4,7 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 
 **Do not edit them.** A local difference belongs in `styles/voltaire.css`, which the page loads after them. Keeping the vendored bytes unchanged is what lets each file be checked against the design system.
 
-- **Donor:** `apexSolarKiss/design-system-ASK` at commit `e84394bae81f7b202f1673e7ef7696a5bc3bba1c`, where design-system-ASK#211 merged. All 20 files are at that commit.
+- **Donor:** `apexSolarKiss/design-system-ASK` at commit `e88e92b42d354ae98f687c28b9f1eefcbeb4f557`, where design-system-ASK#212 merged. All 20 files are at that commit.
 - **Files:** 20, each byte-identical to its donor's file
 
 | Here | In design-system-ASK | Bytes | SHA-256 |
@@ -22,7 +22,7 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 | `_dsa-surface/surface-shell.template.html` | `patterns/surface-shell/surface-shell.template.html` | 15,976 | `9fab10a625cec1e0764f16ec40affe4b26a8333aefcb45f470b1623c338ee9f0` |
 | `_dsa-surface/surface-text-link.css` | `surface-text-link.css` | 7,921 | `9a6acf457ffbe2a0bb31ae28507855b6446195ff9dcd3cc7112f04ec5bf0fce3` |
 | `_dsa-surface/surface-treatments.css` | `surface-treatments.css` | 48,906 | `a277e97e99779f42053e6c1c4043ddda1ecdfaaa34945096dc1cf724b2625c31` |
-| `_dsa-tokens/colors_and_type.css` | `colors_and_type.css` | 15,496 | `4fed9d796a0d51072802f430b9528459a5cbb9c709fa1964bf5b13f18464122a` |
+| `_dsa-tokens/colors_and_type.css` | `colors_and_type.css` | 15,945 | `d00f1f4f17d4af5201d840dd9f1f558800e69c77280826a3f8d07e9ffd99ef5e` |
 | `_dsa-tokens/fonts/Inter-OFL.txt` | `fonts/Inter-OFL.txt` | 4,380 | `262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a` |
 | `_dsa-tokens/fonts/InterVariable-Italic.woff2` | `fonts/InterVariable-Italic.woff2` | 387,976 | `e564f652916db6c139570fefb9524a77c4d48f30c92928de9db19b6b5c7a262a` |
 | `_dsa-tokens/fonts/InterVariable.woff2` | `fonts/InterVariable.woff2` | 352,240 | `693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3` |
