@@ -43,7 +43,7 @@ The page loads nothing from another site. Its links to other sites are ordinary 
 
 **Light and dark.** The page follows the reader's system setting. In the dark theme the pyramid and the wordmark are the 2025 file's own colors: lavender outlines and lettering, and black plates. In the light theme the wordmark is white, and the pyramid takes the light figures' colors, the design system's diagram ink for its outlines and its node fill for its plates, so it sits with the figures and the stack still reads as stacked. Each figure shows its matching file; the two charts, "how it works" and the futures market share, take the style guide's colors in both themes (`FIGURES.md`).
 
-**Navigation.** The navigation panel is built by `_dsa-surface/surface-shell.js` from the `<template class="surface-nav-source">` at the foot of the page. Its entries are the page's sections: choosing one closes the panel and moves to that section. To add a section, give its heading an `id` and add a row for it to the template.
+**Navigation.** The navigation panel is built by `_dsa-surface/surface-shell.js` from the `<template class="surface-nav-source">` at the foot of the page. Its entries are the page's sections: choosing one closes the panel and moves to that section. Below them, the template's `surface-nav-utilities` row carries two routes off the page, the repository and design-system-ASK, which open in a new tab. To add a section, give its heading an `id` and add a row for it to the template.
 
 ## Deploy it
 
