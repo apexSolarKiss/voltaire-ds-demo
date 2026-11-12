@@ -82,11 +82,4 @@ body { min-height: 100vh; }
   :is(.doc-title, .doc-section-title, .doc-subsection-title, .doc-deep-title) { break-after: avoid; }
   .doc-section:has(> :is(.doc-section-title, .doc-subsection-title):first-child + .v-figure:last-child) { break-inside: avoid; }
   .doc-section-title + .doc-flow { break-before: avoid; }
-  /* While a page prints, the shell's runtime takes its narrow navigation mode.
-     Its seated control and the fade behind it are fixed to the screen, and a
-     print draws them over the content of its sheets. Paper cannot navigate,
-     so neither is drawn in print, as the shell hides the pair in its own
-     short state; the lockup keeps its symbol. The shell declares no print
-     rules; this is Voltaire's interim adaptation until the shell owns one. */
-  .surface-nav-seat, .surface-nav-fade { display: none; }
 }

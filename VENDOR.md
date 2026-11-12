@@ -4,7 +4,7 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 
 **Do not edit them.** A local difference belongs in `styles/voltaire.css`, which the page loads after them. Keeping the vendored bytes unchanged is what lets each file be checked against the design system.
 
-- **Donor:** `apexSolarKiss/design-system-ASK` at commit `8fbda728c958990a81d1cbfcd26a7dfe97cdc631`, where design-system-ASK#208 merged. All 20 files are at that commit.
+- **Donor:** `apexSolarKiss/design-system-ASK` at commit `300ec48fae21304a03c9b81ea6e056e675947ed3`, where design-system-ASK#210 merged. All 20 files are at that commit.
 - **Files:** 20, each byte-identical to its donor's file
 
 | Here | In design-system-ASK | Bytes | SHA-256 |
@@ -17,9 +17,9 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 | `_dsa-surface/surface-document-overflow.js` | `surface-document-overflow.js` | 3,623 | `d66d31b36f697e20739ba009dcfa7ba05328be33fd6f401fa41443d3e268bca1` |
 | `_dsa-surface/surface-document.css` | `surface-document.css` | 79,800 | `d0c67bedbe610a130f15a083329bf3455879a8c3cf1828f57db21aa8ac536543` |
 | `_dsa-surface/surface-panel.css` | `surface-panel.css` | 11,230 | `883e24ac5407a4fe24f9149b0d8964a06995cc88b6b6150b1a1bdfd9aee2976e` |
-| `_dsa-surface/surface-shell.css` | `patterns/surface-shell/surface-shell.css` | 70,163 | `a960e0c0bae43c7e9b8f051579c3912b2b67d300bf94fdcd3d2bbe10ba8fa84e` |
+| `_dsa-surface/surface-shell.css` | `patterns/surface-shell/surface-shell.css` | 72,505 | `2c9bbe388396f88198a08140758832ec09452a68addacce49f275728343559d3` |
 | `_dsa-surface/surface-shell.js` | `patterns/surface-shell/surface-shell.js` | 53,439 | `a69b9de1d5b316ab8ee37f2670f61284dac5f84be2ba43c522bdc2e2d6f8d5e9` |
-| `_dsa-surface/surface-shell.template.html` | `patterns/surface-shell/surface-shell.template.html` | 15,855 | `3d2afab1ecf846b132eab6e9c1e1982817a187ba04dd7fa63a4ceebc7e1700c6` |
+| `_dsa-surface/surface-shell.template.html` | `patterns/surface-shell/surface-shell.template.html` | 15,976 | `9fab10a625cec1e0764f16ec40affe4b26a8333aefcb45f470b1623c338ee9f0` |
 | `_dsa-surface/surface-text-link.css` | `surface-text-link.css` | 7,921 | `9a6acf457ffbe2a0bb31ae28507855b6446195ff9dcd3cc7112f04ec5bf0fce3` |
 | `_dsa-surface/surface-treatments.css` | `surface-treatments.css` | 48,906 | `a277e97e99779f42053e6c1c4043ddda1ecdfaaa34945096dc1cf724b2625c31` |
 | `_dsa-tokens/colors_and_type.css` | `colors_and_type.css` | 15,496 | `4fed9d796a0d51072802f430b9528459a5cbb9c709fa1964bf5b13f18464122a` |
