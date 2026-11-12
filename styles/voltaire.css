@@ -72,11 +72,13 @@ body { min-height: 100vh; }
    between its words; the figures under it stay unwrapped and end-aligned. A
    figure keeps to one sheet: it never breaks across two, and one taller than
    a sheet is drawn whole within it. A heading stays with what follows it, and
-   a section that is only a heading and its figure stays together. The type,
-   the ratings and every association are unchanged. */
+   a section that is only a heading and its figure stays together. A table
+   row that fits on one sheet is kept to one, so its label prints with its
+   cells. The type, the ratings and every association are unchanged. */
 @media print {
   @page { size: letter landscape; }
   .v-wide > table.doc-table > thead > tr > th.doc-table-num { white-space: normal; }
+  .v-wide > table.doc-table > tbody > tr { break-inside: avoid; }
   .v-figure { break-inside: avoid; }
   :where(.v-figure) img { max-height: min(7in, 100vh); object-fit: contain; object-position: left top; }
   :is(.doc-title, .doc-section-title, .doc-subsection-title, .doc-deep-title) { break-after: avoid; }
