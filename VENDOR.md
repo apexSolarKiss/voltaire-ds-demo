@@ -4,7 +4,7 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 
 **Do not edit them.** A local difference belongs in `styles/voltaire.css`, which the page loads after them. Keeping the vendored bytes unchanged is what lets each file be checked against the design system.
 
-- **Donor:** `apexSolarKiss/design-system-ASK` at commit `300ec48fae21304a03c9b81ea6e056e675947ed3`, where design-system-ASK#210 merged. All 20 files are at that commit.
+- **Donor:** `apexSolarKiss/design-system-ASK` at commit `e84394bae81f7b202f1673e7ef7696a5bc3bba1c`, where design-system-ASK#211 merged. All 20 files are at that commit.
 - **Files:** 20, each byte-identical to its donor's file
 
 | Here | In design-system-ASK | Bytes | SHA-256 |
@@ -15,7 +15,7 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 | `_dsa-surface/spectral-state.css` | `spectral-state.css` | 5,235 | `dd30fdc0b7b9174801129f0d01f45e22da5bbd92ff47e58d7aabaeea64f0d05b` |
 | `_dsa-surface/surface-action.css` | `surface-action.css` | 21,898 | `f00ccde1b4db17687fd6ecd62644700932107352b37476184718f2036209fb2e` |
 | `_dsa-surface/surface-document-overflow.js` | `surface-document-overflow.js` | 3,623 | `d66d31b36f697e20739ba009dcfa7ba05328be33fd6f401fa41443d3e268bca1` |
-| `_dsa-surface/surface-document.css` | `surface-document.css` | 79,800 | `d0c67bedbe610a130f15a083329bf3455879a8c3cf1828f57db21aa8ac536543` |
+| `_dsa-surface/surface-document.css` | `surface-document.css` | 82,587 | `1c122ddf355a065197b05bb4e8b3c821bee37617f052982c68da923cfdb72a27` |
 | `_dsa-surface/surface-panel.css` | `surface-panel.css` | 11,230 | `883e24ac5407a4fe24f9149b0d8964a06995cc88b6b6150b1a1bdfd9aee2976e` |
 | `_dsa-surface/surface-shell.css` | `patterns/surface-shell/surface-shell.css` | 72,505 | `2c9bbe388396f88198a08140758832ec09452a68addacce49f275728343559d3` |
 | `_dsa-surface/surface-shell.js` | `patterns/surface-shell/surface-shell.js` | 53,439 | `a69b9de1d5b316ab8ee37f2670f61284dac5f84be2ba43c522bdc2e2d6f8d5e9` |
