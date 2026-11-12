@@ -22,7 +22,7 @@ The page loads nothing from another site. Its links to other sites are ordinary 
 | Yours to edit | What it is |
 |---|---|
 | `index.html` | the page: its content, sections and navigation |
-| `styles/voltaire.css` | local layout over the design system: the lockup's composition, the navigation control's compact height, measure, the comparison tables' width and columns, list spacing and figure placement |
+| `styles/voltaire.css` | local layout over the design system: the lockup's composition, the navigation control's compact height, measure, the comparison tables' width and columns, list spacing, figure placement and the printed page |
 | `assets/figures/` // `assets/figures/light/` | the figures for the dark and the light theme; `FIGURES.md` lists each |
 | `assets/identity.json` | the identity's parts and the ones this site shows: which symbol, which wordmark, how the two are composed and which theme the repository artwork takes |
 | `assets/voltaire-symbol-light.svg` // `assets/voltaire-symbol-dark.svg` | the pyramid, for the light and the dark theme |

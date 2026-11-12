@@ -1,7 +1,9 @@
 /* Voltaire's local layout, layered over the vendored design-system-ASK modules.
-   It sets the lockup's composition, measure, list spacing and figure
-   placement only: no color, font, type size or token of its own. Edit this
-   file freely; never edit the vendored ones (VENDOR.md). */
+   It sets the lockup's composition, the navigation control's compact height,
+   measure, the comparison tables' width and columns, list spacing, figure
+   placement, the fragment-target scroll margin and the printed page only: no
+   color, font, type size or token of its own. Edit this file freely; never
+   edit the vendored ones (VENDOR.md). */
 
 body { min-height: 100vh; }
 
@@ -62,3 +64,29 @@ body { min-height: 100vh; }
 :root[data-theme="dark"] .v-figure-dark { display: block; }
 .theme-dark .v-figure-light { display: none; }
 .theme-dark .v-figure-dark { display: block; }
+
+/* Print. Paper cannot scroll, so a comparison table wider than the printed
+   column would lose its right-hand columns to its box's clip. The page prints
+   on landscape Letter, the source presentation's own orientation, whose
+   column holds both tables whole once a numeric column's header may wrap
+   between its words; the figures under it stay unwrapped and end-aligned. A
+   figure keeps to one sheet: it never breaks across two, and one taller than
+   a sheet is drawn whole within it. A heading stays with what follows it, and
+   a section that is only a heading and its figure stays together. The type,
+   the ratings and every association are unchanged. */
+@media print {
+  @page { size: letter landscape; }
+  .v-wide > table.doc-table > thead > tr > th.doc-table-num { white-space: normal; }
+  .v-figure { break-inside: avoid; }
+  :where(.v-figure) img { max-height: min(7in, 100vh); object-fit: contain; object-position: left top; }
+  :is(.doc-title, .doc-section-title, .doc-subsection-title, .doc-deep-title) { break-after: avoid; }
+  .doc-section:has(> :is(.doc-section-title, .doc-subsection-title):first-child + .v-figure:last-child) { break-inside: avoid; }
+  .doc-section-title + .doc-flow { break-before: avoid; }
+  /* While a page prints, the shell's runtime takes its narrow navigation mode.
+     Its seated control and the fade behind it are fixed to the screen, and a
+     print draws them over the content of its sheets. Paper cannot navigate,
+     so neither is drawn in print, as the shell hides the pair in its own
+     short state; the lockup keeps its symbol. The shell declares no print
+     rules; this is Voltaire's interim adaptation until the shell owns one. */
+  .surface-nav-seat, .surface-nav-fade { display: none; }
+}
