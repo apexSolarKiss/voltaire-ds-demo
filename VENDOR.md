@@ -4,25 +4,25 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 
 **Do not edit them.** A local difference belongs in `styles/voltaire.css`, which the page loads after them. Keeping the vendored bytes unchanged is what lets each file be checked against the design system.
 
-- **Donor:** `apexSolarKiss/design-system-ASK` at commit `e88e92b42d354ae98f687c28b9f1eefcbeb4f557`, where design-system-ASK#212 merged. All 20 files are at that commit.
+- **Donor:** `apexSolarKiss/design-system-ASK` at commit `842f272280a3240ac51182d43d5d70efe7108f2c`, where design-system-ASK#223 merged. All 20 files are at that commit.
 - **Files:** 20, each byte-identical to its donor's file
 
 | Here | In design-system-ASK | Bytes | SHA-256 |
 |---|---|---:|---|
-| `_dsa-surface/criterion-assessment.css` | `criterion-assessment.css` | 5,979 | `2e9a5d453b1d22263d3a9c30b5a94cc679861db94b8c925069d520543e39a1e3` |
-| `_dsa-surface/evidence-state.css` | `evidence-state.css` | 4,362 | `1256fb8c9178a29aa4ee9d4b586da40087e1ea30a1264689bd9a0b4e0aab209e` |
-| `_dsa-surface/review-semantics.css` | `review-semantics.css` | 33,109 | `74345c46c9260d6cfb0eefb47f4ff4d289e4b7cd51279afaeecacf1e75b1f31a` |
-| `_dsa-surface/spectral-state.css` | `spectral-state.css` | 5,235 | `dd30fdc0b7b9174801129f0d01f45e22da5bbd92ff47e58d7aabaeea64f0d05b` |
+| `_dsa-surface/criterion-assessment.css` | `criterion-assessment.css` | 5,873 | `03e218733926d8715bbd16bfb5994940562a8cb1588d410adcf9c919605e7ce7` |
+| `_dsa-surface/evidence-state.css` | `evidence-state.css` | 5,060 | `9d70966f33ca4c940e8b2e2b6c2c10350ce2a305e65d07c7e43f8507c223358a` |
+| `_dsa-surface/review-semantics.css` | `review-semantics.css` | 33,137 | `1647f1d54f7873db5b932dea117c1b12f56dc779881cf8e0587ca586dd648f34` |
+| `_dsa-surface/spectral-state.css` | `spectral-state.css` | 6,581 | `d93aa47ad8acb4c7b7873d8a0bcd5f55abec1f19035eecb4d239d2621cc354bc` |
 | `_dsa-surface/surface-action.css` | `surface-action.css` | 21,898 | `f00ccde1b4db17687fd6ecd62644700932107352b37476184718f2036209fb2e` |
 | `_dsa-surface/surface-document-overflow.js` | `surface-document-overflow.js` | 3,623 | `d66d31b36f697e20739ba009dcfa7ba05328be33fd6f401fa41443d3e268bca1` |
-| `_dsa-surface/surface-document.css` | `surface-document.css` | 82,587 | `1c122ddf355a065197b05bb4e8b3c821bee37617f052982c68da923cfdb72a27` |
+| `_dsa-surface/surface-document.css` | `surface-document.css` | 88,017 | `57140e0d5383f95d4d88001e535c682d0c47152e2165e92516ece2ba4cf999ed` |
 | `_dsa-surface/surface-panel.css` | `surface-panel.css` | 11,230 | `883e24ac5407a4fe24f9149b0d8964a06995cc88b6b6150b1a1bdfd9aee2976e` |
 | `_dsa-surface/surface-shell.css` | `patterns/surface-shell/surface-shell.css` | 72,505 | `2c9bbe388396f88198a08140758832ec09452a68addacce49f275728343559d3` |
 | `_dsa-surface/surface-shell.js` | `patterns/surface-shell/surface-shell.js` | 53,439 | `a69b9de1d5b316ab8ee37f2670f61284dac5f84be2ba43c522bdc2e2d6f8d5e9` |
 | `_dsa-surface/surface-shell.template.html` | `patterns/surface-shell/surface-shell.template.html` | 15,976 | `9fab10a625cec1e0764f16ec40affe4b26a8333aefcb45f470b1623c338ee9f0` |
 | `_dsa-surface/surface-text-link.css` | `surface-text-link.css` | 7,921 | `9a6acf457ffbe2a0bb31ae28507855b6446195ff9dcd3cc7112f04ec5bf0fce3` |
-| `_dsa-surface/surface-treatments.css` | `surface-treatments.css` | 48,906 | `a277e97e99779f42053e6c1c4043ddda1ecdfaaa34945096dc1cf724b2625c31` |
-| `_dsa-tokens/colors_and_type.css` | `colors_and_type.css` | 15,945 | `d00f1f4f17d4af5201d840dd9f1f558800e69c77280826a3f8d07e9ffd99ef5e` |
+| `_dsa-surface/surface-treatments.css` | `surface-treatments.css` | 55,223 | `272bb52c3f84e845a2c040bf90e0b04289bd3b121512de8e879c70665fec06da` |
+| `_dsa-tokens/colors_and_type.css` | `colors_and_type.css` | 17,164 | `14631bbcca9f18f2b59ec1483daac91dd3a51ada0f38f451ba06d73ebb838bf4` |
 | `_dsa-tokens/fonts/Inter-OFL.txt` | `fonts/Inter-OFL.txt` | 4,380 | `262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a` |
 | `_dsa-tokens/fonts/InterVariable-Italic.woff2` | `fonts/InterVariable-Italic.woff2` | 387,976 | `e564f652916db6c139570fefb9524a77c4d48f30c92928de9db19b6b5c7a262a` |
 | `_dsa-tokens/fonts/InterVariable.woff2` | `fonts/InterVariable.woff2` | 352,240 | `693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3` |
