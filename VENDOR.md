@@ -4,15 +4,15 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 
 **Do not edit them.** A local difference belongs in `styles/voltaire.css`, which the page loads after them. Keeping the vendored bytes unchanged is what lets each file be checked against the design system.
 
-- **Donor:** `apexSolarKiss/design-system-ASK` at commit `842f272280a3240ac51182d43d5d70efe7108f2c`, where design-system-ASK#223 merged. All 20 files are at that commit.
+- **Donor:** `apexSolarKiss/design-system-ASK` at commit `aa7bfb00df9ac7f80b15ab118ff1c46403f265db`, where design-system-ASK#230 merged. All 20 files are at that commit.
 - **Files:** 20, each byte-identical to its donor's file
 
 | Here | In design-system-ASK | Bytes | SHA-256 |
 |---|---|---:|---|
-| `_dsa-surface/criterion-assessment.css` | `criterion-assessment.css` | 5,873 | `03e218733926d8715bbd16bfb5994940562a8cb1588d410adcf9c919605e7ce7` |
-| `_dsa-surface/evidence-state.css` | `evidence-state.css` | 5,060 | `9d70966f33ca4c940e8b2e2b6c2c10350ce2a305e65d07c7e43f8507c223358a` |
-| `_dsa-surface/review-semantics.css` | `review-semantics.css` | 33,137 | `1647f1d54f7873db5b932dea117c1b12f56dc779881cf8e0587ca586dd648f34` |
-| `_dsa-surface/spectral-state.css` | `spectral-state.css` | 6,581 | `d93aa47ad8acb4c7b7873d8a0bcd5f55abec1f19035eecb4d239d2621cc354bc` |
+| `_dsa-surface/criterion-assessment.css` | `criterion-assessment.css` | 8,800 | `2fae366656322dfb0ca506068e2c2e3ed66687adff089c958b0d7db289dbb50f` |
+| `_dsa-surface/evidence-state.css` | `evidence-state.css` | 11,225 | `7467c69aa4da4220792132d338ef3fc937ecfcf44cfdbe5f167c4b4ddea4957d` |
+| `_dsa-surface/review-semantics.css` | `review-semantics.css` | 44,233 | `347ea6cf5886171a4e00c81144e935c6c824a7e76ffc63fd94d01c6288fe5bcc` |
+| `_dsa-surface/spectral-state.css` | `spectral-state.css` | 11,065 | `770324231461b629d18a0b41c4beecb9b5015e203f6a49b2e84ef56bc29020cf` |
 | `_dsa-surface/surface-action.css` | `surface-action.css` | 21,898 | `f00ccde1b4db17687fd6ecd62644700932107352b37476184718f2036209fb2e` |
 | `_dsa-surface/surface-document-overflow.js` | `surface-document-overflow.js` | 3,623 | `d66d31b36f697e20739ba009dcfa7ba05328be33fd6f401fa41443d3e268bca1` |
 | `_dsa-surface/surface-document.css` | `surface-document.css` | 88,017 | `57140e0d5383f95d4d88001e535c682d0c47152e2165e92516ece2ba4cf999ed` |
@@ -21,8 +21,8 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 | `_dsa-surface/surface-shell.js` | `patterns/surface-shell/surface-shell.js` | 53,439 | `a69b9de1d5b316ab8ee37f2670f61284dac5f84be2ba43c522bdc2e2d6f8d5e9` |
 | `_dsa-surface/surface-shell.template.html` | `patterns/surface-shell/surface-shell.template.html` | 15,976 | `9fab10a625cec1e0764f16ec40affe4b26a8333aefcb45f470b1623c338ee9f0` |
 | `_dsa-surface/surface-text-link.css` | `surface-text-link.css` | 7,921 | `9a6acf457ffbe2a0bb31ae28507855b6446195ff9dcd3cc7112f04ec5bf0fce3` |
-| `_dsa-surface/surface-treatments.css` | `surface-treatments.css` | 55,223 | `272bb52c3f84e845a2c040bf90e0b04289bd3b121512de8e879c70665fec06da` |
-| `_dsa-tokens/colors_and_type.css` | `colors_and_type.css` | 17,164 | `14631bbcca9f18f2b59ec1483daac91dd3a51ada0f38f451ba06d73ebb838bf4` |
+| `_dsa-surface/surface-treatments.css` | `surface-treatments.css` | 69,299 | `ae03dda052475be5d6ea14e0fab8dd3f1608fdf5b9d09b4859a1f146a08fc0dc` |
+| `_dsa-tokens/colors_and_type.css` | `colors_and_type.css` | 17,164 | `4913d77072b44e9b5217bb2a64526ae3ee5248913a9eade08a63d8f520d11385` |
 | `_dsa-tokens/fonts/Inter-OFL.txt` | `fonts/Inter-OFL.txt` | 4,380 | `262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a` |
 | `_dsa-tokens/fonts/InterVariable-Italic.woff2` | `fonts/InterVariable-Italic.woff2` | 387,976 | `e564f652916db6c139570fefb9524a77c4d48f30c92928de9db19b6b5c7a262a` |
 | `_dsa-tokens/fonts/InterVariable.woff2` | `fonts/InterVariable.woff2` | 352,240 | `693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3` |
