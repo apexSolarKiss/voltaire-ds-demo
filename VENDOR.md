@@ -4,15 +4,15 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 
 **Do not edit them.** A local difference belongs in `styles/voltaire.css`, which the page loads after them. Keeping the vendored bytes unchanged is what lets each file be checked against the design system.
 
-- **Donor:** `apexSolarKiss/design-system-ASK` at commit `aa7bfb00df9ac7f80b15ab118ff1c46403f265db`, where design-system-ASK#230 merged. All 20 files are at that commit.
+- **Donor:** `apexSolarKiss/design-system-ASK` at commit `89397df24550bd5c7f1d64d1c8a8b46143c0219f`, where design-system-ASK#237 merged. All 20 files are at that commit.
 - **Files:** 20, each byte-identical to its donor's file
 
 | Here | In design-system-ASK | Bytes | SHA-256 |
 |---|---|---:|---|
-| `_dsa-surface/criterion-assessment.css` | `criterion-assessment.css` | 8,800 | `2fae366656322dfb0ca506068e2c2e3ed66687adff089c958b0d7db289dbb50f` |
-| `_dsa-surface/evidence-state.css` | `evidence-state.css` | 11,225 | `7467c69aa4da4220792132d338ef3fc937ecfcf44cfdbe5f167c4b4ddea4957d` |
-| `_dsa-surface/review-semantics.css` | `review-semantics.css` | 44,233 | `347ea6cf5886171a4e00c81144e935c6c824a7e76ffc63fd94d01c6288fe5bcc` |
-| `_dsa-surface/spectral-state.css` | `spectral-state.css` | 11,065 | `770324231461b629d18a0b41c4beecb9b5015e203f6a49b2e84ef56bc29020cf` |
+| `_dsa-surface/criterion-assessment.css` | `criterion-assessment.css` | 13,883 | `ee0a1201cc90b402c1a33aa101393272a9253b9874ed2656e4cefa0cb79fea6e` |
+| `_dsa-surface/evidence-state.css` | `evidence-state.css` | 13,892 | `512256b76184c0cce974f514d50e6e392ea2721fb7843819c6422c5c71f2e2cb` |
+| `_dsa-surface/review-semantics.css` | `review-semantics.css` | 45,324 | `1d190b8e824037009660273edee35ee332fbc97af76811f2e119cf0dcfde2a24` |
+| `_dsa-surface/spectral-state.css` | `spectral-state.css` | 12,463 | `e9801af2e9ed44e9890f907dac76f6cf41b50a81860241aae99f67a35c250fe4` |
 | `_dsa-surface/surface-action.css` | `surface-action.css` | 21,898 | `f00ccde1b4db17687fd6ecd62644700932107352b37476184718f2036209fb2e` |
 | `_dsa-surface/surface-document-overflow.js` | `surface-document-overflow.js` | 3,623 | `d66d31b36f697e20739ba009dcfa7ba05328be33fd6f401fa41443d3e268bca1` |
 | `_dsa-surface/surface-document.css` | `surface-document.css` | 88,017 | `57140e0d5383f95d4d88001e535c682d0c47152e2165e92516ece2ba4cf999ed` |
@@ -21,8 +21,8 @@ The files under `_dsa-tokens/` and `_dsa-surface/` are copied unmodified from [d
 | `_dsa-surface/surface-shell.js` | `patterns/surface-shell/surface-shell.js` | 53,439 | `a69b9de1d5b316ab8ee37f2670f61284dac5f84be2ba43c522bdc2e2d6f8d5e9` |
 | `_dsa-surface/surface-shell.template.html` | `patterns/surface-shell/surface-shell.template.html` | 15,976 | `9fab10a625cec1e0764f16ec40affe4b26a8333aefcb45f470b1623c338ee9f0` |
 | `_dsa-surface/surface-text-link.css` | `surface-text-link.css` | 7,921 | `9a6acf457ffbe2a0bb31ae28507855b6446195ff9dcd3cc7112f04ec5bf0fce3` |
-| `_dsa-surface/surface-treatments.css` | `surface-treatments.css` | 69,299 | `ae03dda052475be5d6ea14e0fab8dd3f1608fdf5b9d09b4859a1f146a08fc0dc` |
-| `_dsa-tokens/colors_and_type.css` | `colors_and_type.css` | 17,164 | `4913d77072b44e9b5217bb2a64526ae3ee5248913a9eade08a63d8f520d11385` |
+| `_dsa-surface/surface-treatments.css` | `surface-treatments.css` | 71,897 | `03bb8b36c5f058d8783442cc1ea499b0076892ca27047d80f2a1ccd99a56f6ba` |
+| `_dsa-tokens/colors_and_type.css` | `colors_and_type.css` | 17,649 | `5aceed44caea4a7643de432deb4370ce43a848a16e5e75ddcfb5a6bb93f62481` |
 | `_dsa-tokens/fonts/Inter-OFL.txt` | `fonts/Inter-OFL.txt` | 4,380 | `262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a` |
 | `_dsa-tokens/fonts/InterVariable-Italic.woff2` | `fonts/InterVariable-Italic.woff2` | 387,976 | `e564f652916db6c139570fefb9524a77c4d48f30c92928de9db19b6b5c7a262a` |
 | `_dsa-tokens/fonts/InterVariable.woff2` | `fonts/InterVariable.woff2` | 352,240 | `693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3` |
@@ -49,7 +49,7 @@ _dsa-surface/surface-shell.css
 styles/voltaire.css
 ```
 
-The order is part of the design system's contract. `spectral-state.css` and `criterion-assessment.css` color the comparison tables' rails, which take their paint from `surface-treatments.css`; `evidence-state.css` and `review-semantics.css` serve the check in "About this prototype".
+The order is part of the design system's contract. `criterion-assessment.css` colors the comparison tables' rails with the green, yellow and red values in `colors_and_type.css`, and the rails take their paint from `surface-treatments.css`. `spectral-state.css` gives them no color; it stays before `criterion-assessment.css`, where the design system's order for Criterion Assessment places it. `evidence-state.css` and `review-semantics.css` serve the check in "About this prototype".
 
 `_dsa-surface/surface-shell.template.html` is loaded by no page. It is the shell's canonical markup specimen, which the shell contract asks every consumer to carry with `surface-shell.css`, so a page can be checked against it.
 
